@@ -81,7 +81,8 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         // If you want your created entities to be saved by default
         // then do the following. You can selectively re-enable or disable
         // this behavior in each test as well.
-        $this->factory->persistAndFlushOnGet();
+        // It's recommended to only enable this in tests that need it.
+        //$this->factory->persistAndFlushOnGet();
     }
 }
 ```
