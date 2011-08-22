@@ -3,7 +3,9 @@
 A set of utility classes for integration with Doctrine. This package is part of
 the Xi project.
 
-Run `git submodule update --init --recursive` after cloning to fetch Doctrine and its dependencies.
+If you want to use xi-doctrine, make it a submodule of your project and arrange for its `library/` to be on your include path.
+
+If you want to develop xi-doctrine, then clone it and run `git submodule update --init --recursive` to fetch Doctrine and its dependencies.
 
 
 Zend FirePHP logger
