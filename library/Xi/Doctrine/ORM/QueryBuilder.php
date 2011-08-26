@@ -20,6 +20,20 @@ class QueryBuilder extends DoctrineQueryBuilder
     protected $_queryConfigurers = array();
     
     /**
+     * Entity name associated with this query builder (if any)
+     *
+     * @var string
+     */
+    protected $entityName;
+
+    /**
+     * Entity alias associated with this query builder (if any)
+     *
+     * @var string
+     */
+    protected $entityAlias;
+
+    /**
      * Create a new QueryBuilder of the type that receives this static call.
      *
      * @param EntityManager $em
@@ -32,17 +46,30 @@ class QueryBuilder extends DoctrineQueryBuilder
     
     /**
      * @param EntityManager $em
+     * @param string $entityName
+     * @param string $entityAlias
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, $entityName = null, $entityAlias = null)
     {
         parent::__construct($em);
+
+        $this->entityName = $entityName;
+        $this->entityAlias = $entityAlias;
         $this->init();
     }
     
     /**
      * Post-construction template method
+     *
+     * Prepopulates with entity if both entity name and alias are set.
      */
-    public function init() {}
+    public function init()
+    {
+        if (is_string($this->entityName) && is_string($this->entityAlias)) {
+            $this->select($this->entityAlias)
+                 ->from($this->entityName, $this->entityAlias);
+        }
+    }
     
     /**
      * Configures the created Query using the configurers added to this builder
