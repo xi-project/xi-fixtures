@@ -10,11 +10,6 @@ use Doctrine\ORM\QueryBuilder as DoctrineQueryBuilder,
 class QueryBuilder extends DoctrineQueryBuilder
 {
     /**
-     * @var EntityManager
-     */
-    private static $_em;
-    
-    /**
      * @var array<string => boolean>
      */
     protected $_statuses = array();
@@ -25,31 +20,18 @@ class QueryBuilder extends DoctrineQueryBuilder
     protected $_queryConfigurers = array();
     
     /**
-     * Inject the EntityManager to all QueryBuilder instances built using
-     * create().
-     * 
-     * This is a hack, and a better solution would be the use of proper layering
-     * and dependency injection for each use case.
-     * 
-     * @param EntityManager $em
-     */
-    public static function setEntityManager(EntityManager $em)
-    {
-        self::$_em = $em;
-    }
-    
-    /**
      * Create a new QueryBuilder of the type that receives this static call.
-     * 
+     *
+     * @param EntityManager $em
      * @return QueryBuilder
      */
-    public static function create()
+    public static function create(EntityManager $em)
     {
-        return new static(self::$_em);
+        return new static($em);
     }
     
     /**
-     * @param EntityManager $em 
+     * @param EntityManager $em
      */
     public function __construct(EntityManager $em)
     {

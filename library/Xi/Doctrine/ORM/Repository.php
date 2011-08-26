@@ -90,7 +90,7 @@ class Repository extends EntityRepository
      */
     protected function getBaseQueryBuilder()
     {
-        return QueryBuilder::create();
+        return QueryBuilder::create($this->_em);
     }
     
     /**
