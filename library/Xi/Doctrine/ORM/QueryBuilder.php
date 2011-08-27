@@ -106,7 +106,7 @@ class QueryBuilder extends DoctrineQueryBuilder
      * Example:
      * 
      * public function withProduct() {
-     *     return $this->_ensure('product is joined', function($qb) {
+     *     return $this->ensure('product is joined', function($qb) {
      *         $qb->join('pv.product', 'p');
      *     });
      * }
@@ -121,7 +121,7 @@ class QueryBuilder extends DoctrineQueryBuilder
      * @param callback(QueryBuilder) $operation
      * @return QueryBuilder
      */
-    protected function _ensure($status, $operation)
+    protected function ensure($status, $operation)
     {
         if (empty($this->_statuses[$status])) {
             $operation($this);
@@ -135,9 +135,9 @@ class QueryBuilder extends DoctrineQueryBuilder
      * 
      * @return QueryBuilder
      */
-    protected function _asPartial()
+    protected function asPartial()
     {
-        return $this->_ensure('partial loading is forced', function(QueryBuilder $builder) {
+        return $this->ensure('partial loading is forced', function(QueryBuilder $builder) {
             $builder->_configureQuery(function(Query $query) {
                 $query->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true);
             });
