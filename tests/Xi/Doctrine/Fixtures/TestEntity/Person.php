@@ -17,7 +17,7 @@ class Person
     protected $name;
 
     /**
-     * @ManyToOne(targetEntity="SpaceShip")
+     * @ManyToOne(targetEntity="SpaceShip", inversedBy="crew")
      * @JoinColumn(name="spaceShip_id", referencedColumnName="id", nullable=true)
      */
     protected $spaceShip;

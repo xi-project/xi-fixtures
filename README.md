@@ -167,7 +167,12 @@ $this->factory->persistAndFlushOnGet();           // Default: don't persist
 $this->factory->persistAndFlushOnGet(false);
 ```
 
-Also, `FixtureFactory` and `FieldDef` are designed to be subclassable.
+### Miscellaneous ###
+
+- `FixtureFactory` and `FieldDef` are designed to be subclassable.
+- With bidirectional one-to-many associations, the collection on the 'one'
+  side will get updated as long as you've remembered to specify the
+  `inversedBy` attribute in your mapping.
 
 
 

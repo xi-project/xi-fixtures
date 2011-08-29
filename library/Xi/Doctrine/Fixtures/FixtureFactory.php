@@ -102,6 +102,10 @@ class FixtureFactory
                     $value = $fieldDef($this);
                 }
                 $metadata->setFieldValue($ent, $fieldName, $value);
+                
+                if (is_object($value) && $metadata->isSingleValuedAssociation($fieldName)) {
+                    $this->updateCollectionSideOfAssocation($ent, $metadata, $fieldName, $value);
+                }
             }
         }
         
@@ -187,9 +191,22 @@ class FixtureFactory
         return $this;
     }
     
-    private function addNamespace($name)
+    
+    protected function addNamespace($name)
     {
         $name = trim($name, '\\');
         return $this->entityNamespace . '\\' . $name;
+    }
+    
+    protected function updateCollectionSideOfAssocation($entityBeingCreated, $metadata, $fieldName, $value) {
+        $assoc = $metadata->getAssociationMapping($fieldName);
+        $inverse = $assoc['inversedBy'];
+        if ($inverse) {
+            $valueMetadata = $this->em->getClassMetadata(get_class($value));
+            $collection = $valueMetadata->getFieldValue($value, $inverse);
+            if ($collection instanceof \Doctrine\Common\Collections\Collection) {
+                $collection->add($entityBeingCreated);
+            }
+        }
     }
 }
