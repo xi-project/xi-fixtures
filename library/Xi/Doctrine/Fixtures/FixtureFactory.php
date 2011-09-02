@@ -32,11 +32,6 @@ class FixtureFactory
      * @var boolean
      */
     protected $persist;
-    
-    /**
-     * @var boolean
-     */
-    protected $flush;
 
 
     public function __construct(\Doctrine\ORM\EntityManager $em)
@@ -50,7 +45,6 @@ class FixtureFactory
         $this->singletons = array();
         
         $this->persist = false;
-        $this->flush = false;
     }
     
     /**
@@ -73,8 +67,7 @@ class FixtureFactory
      * Whether the entity is new or not depends on whether you've created
      * a singleton with the entity name. See `getAsSingleton()`.
      * 
-     * If you've called `persistAndFlushOnGet()`then the entity is also
-     * persisted and the entity manager flushed.
+     * If you've called `persistOnGet()`then the entity is also persisted.
      */
     public function get($name, array $fields = array())
     {
@@ -111,22 +104,19 @@ class FixtureFactory
         
         if ($this->persist) {
             $this->em->persist($ent);
-            if ($this->flush) {
-                $this->em->flush();
-            }
         }
         
         return $ent;
     }
     
     /**
-     * Sets whether `get()` should automatically persist the entity it creates
-     * and flush the entity manager. By default it does not.
+     * Sets whether `get()` should automatically persist the entity it creates.
+     * By default it does not. In any case, you still need to call
+     * flush() yourself.
      */
-    public function persistAndFlushOnGet($enabled = true)
+    public function persistOnGet($enabled = true)
     {
         $this->persist = $enabled;
-        $this->flush = $enabled;
     }
     
     /**

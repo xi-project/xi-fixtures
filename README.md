@@ -82,7 +82,8 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         // then do the following. You can selectively re-enable or disable
         // this behavior in each test as well.
         // It's recommended to only enable this in tests that need it.
-        //$this->factory->persistAndFlushOnGet();
+        // In any case, you'll need to call flush() yourself.
+        //$this->factory->persistOnGet();
     }
 }
 ```
@@ -163,8 +164,8 @@ $factory->unsetSingleton('EntityName');
 
 // Configuration
 $this->factory->setEntityNamespace('What\Ever');  // Default: empty
-$this->factory->persistAndFlushOnGet();           // Default: don't persist
-$this->factory->persistAndFlushOnGet(false);
+$this->factory->persistOnGet();                   // Default: don't persist
+$this->factory->persistOnGet(false);
 ```
 
 ### Miscellaneous ###

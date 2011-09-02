@@ -6,12 +6,13 @@ class PersistingTest extends TestCase
     /**
      * @test
      */
-    public function persistAndFlushCanBeTurnedOn()
+    public function automaticPersistCanBeTurnedOn()
     {
         $this->factory->defineEntity('SpaceShip', array('name' => 'Zeta'));
         
-        $this->factory->persistAndFlushOnGet();
+        $this->factory->persistOnGet();
         $ss = $this->factory->get('SpaceShip');
+        $this->em->flush();
         
         $this->assertNotNull($ss->getId());
         $this->assertEquals($ss, $this->em->find('Xi\Doctrine\Fixtures\TestEntity\SpaceShip', $ss->getId()));
@@ -24,6 +25,7 @@ class PersistingTest extends TestCase
     {
         $this->factory->defineEntity('SpaceShip', array('name' => 'Zeta'));
         $ss = $this->factory->get('SpaceShip');
+        $this->em->flush();
         
         $this->assertNull($ss->getId());
         $q = $this->em
