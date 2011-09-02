@@ -46,7 +46,7 @@ For instance, a `User` may be a member of a `Group`, which is part of an `Organi
 
 We'll assume you have a base class for your tests that arranges a fresh `EntityManager` connected to a minimally initialized blank test database. A simple factory setup looks like this.
 
-```PHP
+```php
 <?php
 use Xi\Doctrine\Fixtures\FixtureFactory,
     Xi\Doctrine\Fixtures\FieldDef;
@@ -90,7 +90,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 
 Now you can easily get entities and override fields relevant to your test case like this.
 
-```PHP
+```php
 <?php
 class UserServiceTest extends TestCase
 {
@@ -113,7 +113,7 @@ Sometimes your entity has a dependency graph with several references to some ent
 
 Your first reaction should be to avoid situations like this and specify the shared entity explicitly when you can't. If that isn't feasible for whatever reason, `FixtureFactory` allows you to make an entity a *singleton*. If a singleton exists for a type of entity then `get()` will return that instead of creating a new instance.
 
-```PHP
+```php
 <?php
 class SomeTest extends TestCase
 {
@@ -138,7 +138,7 @@ It's highly recommended to create singletons only in the setups of individual te
 
 ### API reference ###
 
-```PHP
+```php
 <?php
 
 // Defining entities
