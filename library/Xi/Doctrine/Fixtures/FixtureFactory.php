@@ -67,39 +67,24 @@ class FixtureFactory
      * Whether the entity is new or not depends on whether you've created
      * a singleton with the entity name. See `getAsSingleton()`.
      * 
-     * If you've called `persistOnGet()`then the entity is also persisted.
+     * If you've called `persistOnGet()` then the entity is also persisted.
      */
-    public function get($name, array $fields = array())
+    public function get($name, array $fieldOverrides = array())
     {
         if (isset($this->singletons[$name])) {
             return $this->singletons[$name];
         }
         
         $def = $this->entityDefs[$name];
-        $entityType = $def->getEntityType();
-        $metadata = $this->em->getClassMetadata($entityType);
         
-        $extraFields = array_diff(array_keys($fields), array_keys($def->getFieldDefs()));
-        if (!empty($extraFields)) {
-            throw new \Exception("Field(s) not in $entityType: '" . implode("', '", $extraFields) . "'");
-        }
+        $this->checkFieldOverrides($def, $fieldOverrides);
         
-        $ent = $metadata->newInstance();
+        $ent = $def->getEntityMetadata()->newInstance();
         foreach ($def->getFieldDefs() as $fieldName => $fieldDef) {
-            if ($metadata->isCollectionValuedAssociation($fieldName)) {
-                $metadata->setFieldValue($ent, $fieldName, new \Doctrine\Common\Collections\ArrayCollection());
-            } else {
-                if (isset($fields[$fieldName])) {
-                    $value = $fields[$fieldName];
-                } else {
-                    $value = $fieldDef($this);
-                }
-                $metadata->setFieldValue($ent, $fieldName, $value);
-                
-                if (is_object($value) && $metadata->isSingleValuedAssociation($fieldName)) {
-                    $this->updateCollectionSideOfAssocation($ent, $metadata, $fieldName, $value);
-                }
-            }
+            $fieldValue = isset($fieldOverrides[$fieldName])
+                ? $fieldOverrides[$fieldName]
+                : $fieldDef($this);
+            $this->setField($ent, $def, $fieldName, $fieldValue);
         }
         
         if ($this->persist) {
@@ -107,6 +92,29 @@ class FixtureFactory
         }
         
         return $ent;
+    }
+    
+    protected function checkFieldOverrides(EntityDef $def, array $fieldOverrides)
+    {
+        $extraFields = array_diff(array_keys($fieldOverrides), array_keys($def->getFieldDefs()));
+        if (!empty($extraFields)) {
+            throw new \Exception("Field(s) not in " . $def->getEntityType() . ": '" . implode("', '", $extraFields) . "'");
+        }
+    }
+    
+    protected function setField($ent, EntityDef $def, $fieldName, $fieldValue)
+    {
+        $metadata = $def->getEntityMetadata();
+        
+        if ($metadata->isCollectionValuedAssociation($fieldName)) {
+            $metadata->setFieldValue($ent, $fieldName, new \Doctrine\Common\Collections\ArrayCollection());
+        } else {
+            $metadata->setFieldValue($ent, $fieldName, $fieldValue);
+
+            if (is_object($fieldValue) && $metadata->isSingleValuedAssociation($fieldName)) {
+                $this->updateCollectionSideOfAssocation($ent, $metadata, $fieldName, $fieldValue);
+            }
+        }
     }
     
     /**
@@ -124,12 +132,12 @@ class FixtureFactory
      * 
      * It's illegal to call this if `$name` already has a singleton.
      */
-    public function getAsSingleton($name, array $fields = array())
+    public function getAsSingleton($name, array $fieldOverrides = array())
     {
         if (isset($this->singletons[$name])) {
             throw new \Exception("Already a singleton: $name");
         }
-        $this->singletons[$name] = $this->get($name, $fields);
+        $this->singletons[$name] = $this->get($name, $fieldOverrides);
         return $this->singletons[$name];
     }
     

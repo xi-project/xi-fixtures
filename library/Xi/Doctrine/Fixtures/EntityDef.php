@@ -17,7 +17,7 @@ class EntityDef
     
     private $fieldDefs;
     
-    public function __construct(\Doctrine\ORM\EntityManager $em, $name, $type, array $params = array())
+    public function __construct(\Doctrine\ORM\EntityManager $em, $name, $type, array $fieldDefs = array())
     {
         $this->name = $name;
         $this->entityType = $type;
@@ -25,11 +25,11 @@ class EntityDef
         
         $this->fieldDefs = array();
         
-        $this->paramsToDefs($params);
+        $this->readFieldDefs($fieldDefs);
         $this->defaultDefsFromMetadata();
     }
     
-    private function paramsToDefs(array $params)
+    private function readFieldDefs(array $params)
     {
         foreach ($params as $key => $def) {
             if ($this->metadata->hasField($key) ||
@@ -63,6 +63,11 @@ class EntityDef
     public function getFieldDefs()
     {
         return $this->fieldDefs;
+    }
+    
+    public function getEntityMetadata()
+    {
+        return $this->metadata;
     }
     
     private function normalizeFieldDef($def)
