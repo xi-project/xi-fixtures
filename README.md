@@ -139,7 +139,7 @@ It's highly recommended to create singletons only in the setups of individual te
 
 You can give an 'afterCreate' callback to be called after an entity is created and its fields are set. Here you can, for instance, invoke the entity's constructor, since `FixtureFactory` doesn't do that by default.
 
-```
+```php
 <?php
 $factory->defineEntity('User', array(
     'username' => FieldDef::sequence("user_%d"),
