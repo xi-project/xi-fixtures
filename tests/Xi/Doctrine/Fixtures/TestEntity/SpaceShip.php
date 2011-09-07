@@ -21,11 +21,17 @@ class SpaceShip
      */
     protected $crew;
     
+    /**
+     * @var boolean
+     */
+    protected $constructorWasCalled = false;
+    
     
     public function __construct($name)
     {
         $this->name = $name;
         $this->crew = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->constructorWasCalled = true;
     }
     
     public function getId()
@@ -37,9 +43,19 @@ class SpaceShip
     {
         return $this->name;
     }
+    
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 
     public function getCrew()
     {
         return $this->crew;
+    }
+    
+    public function constructorWasCalled()
+    {
+        return $this->constructorWasCalled;
     }
 }

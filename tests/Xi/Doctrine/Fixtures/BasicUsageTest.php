@@ -48,6 +48,17 @@ class BasicUsageTest extends TestCase
     /**
      * @test
      */
+    public function doesNotCallTheConstructorOfTheEntity()
+    {
+        $ss = $this->factory
+            ->defineEntity('SpaceShip', array())
+            ->get('SpaceShip');
+        $this->assertFalse($ss->constructorWasCalled());
+    }
+    
+    /**
+     * @test
+     */
     public function instantiatesCollectionAssociationsToBeEmptyCollections()
     {
         $ss = $this->factory

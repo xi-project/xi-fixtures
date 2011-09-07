@@ -135,6 +135,20 @@ class SomeTest extends TestCase
 
 It's highly recommended to create singletons only in the setups of individual test classes and *NOT* in the base class of your tests.
 
+### Advanced ###
+
+You can give an 'afterCreate' callback to be called after an entity is created and its fields are set. Here you can, for instance, invoke the entity's constructor, since `FixtureFactory` doesn't do that by default.
+
+```
+<?php
+$factory->defineEntity('User', array(
+    'username' => FieldDef::sequence("user_%d"),
+), array(
+    'afterCreate' => function(User $user, array $fieldValues) {
+        $user->__construct($fieldValues['username']);
+    }
+));
+```
 
 ### API reference ###
 
@@ -152,6 +166,10 @@ $factory->defineEntity('EntityName', array(
     'sequenceField3' => FieldDef::sequence(function($n) { return "name-$n"; }),
     
     'referenceField' => FieldDef::reference('OtherEntity')
+), array(
+    'afterCreate' => function($entity, $fieldValues) {
+        // ...
+    }
 ));
 
 // Getting an entity (new or singleton)

@@ -76,16 +76,26 @@ class FixtureFactory
         }
         
         $def = $this->entityDefs[$name];
+        $config = $def->getConfig();
         
         $this->checkFieldOverrides($def, $fieldOverrides);
         
         $ent = $def->getEntityMetadata()->newInstance();
+        $fieldValues = array();
         foreach ($def->getFieldDefs() as $fieldName => $fieldDef) {
-            $fieldValue = isset($fieldOverrides[$fieldName])
+            $fieldValues[$fieldName] = isset($fieldOverrides[$fieldName])
                 ? $fieldOverrides[$fieldName]
                 : $fieldDef($this);
+        }
+        
+        foreach ($fieldValues as $fieldName => $fieldValue) {
             $this->setField($ent, $def, $fieldName, $fieldValue);
         }
+        
+        if (isset($config['afterCreate'])) {
+            $config['afterCreate']($ent, $fieldValues);
+        }
+        
         
         if ($this->persist) {
             $this->em->persist($ent);
@@ -168,7 +178,7 @@ class FixtureFactory
      * 
      * @return FixtureFactory
      */
-    public function defineEntity($name, array $params = array())
+    public function defineEntity($name, array $fieldDefs = array(), array $config = array())
     {
         if (isset($this->entityDefs[$name])) {
             throw new \Exception("Entity '$name' already defined in fixture factory");
@@ -184,7 +194,7 @@ class FixtureFactory
             throw new \Exception("Unknown entity type: $type");
         }
         
-        $this->entityDefs[$name] = new EntityDef($this->em, $name, $type, $params);
+        $this->entityDefs[$name] = new EntityDef($this->em, $name, $type, $fieldDefs, $config);
         
         return $this;
     }

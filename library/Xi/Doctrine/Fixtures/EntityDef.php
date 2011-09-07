@@ -17,13 +17,15 @@ class EntityDef
     
     private $fieldDefs;
     
-    public function __construct(\Doctrine\ORM\EntityManager $em, $name, $type, array $fieldDefs = array())
+    private $config;
+    
+    public function __construct(\Doctrine\ORM\EntityManager $em, $name, $type, array $fieldDefs, array $config)
     {
         $this->name = $name;
         $this->entityType = $type;
         $this->metadata = $em->getClassMetadata($type);
-        
         $this->fieldDefs = array();
+        $this->config = $config;
         
         $this->readFieldDefs($fieldDefs);
         $this->defaultDefsFromMetadata();
@@ -50,24 +52,48 @@ class EntityDef
         }
     }
     
+    /**
+     * Returns the name of the entity definition.
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
     
+    /**
+     * Returns the fully qualified name of the entity class.
+     * @return string
+     */
     public function getEntityType()
     {
         return $this->entityType;
     }
     
+    /**
+     * Returns the fielde definition callbacks.
+     */
     public function getFieldDefs()
     {
         return $this->fieldDefs;
     }
     
+    /**
+     * Returns the Doctrine metadata for the entity to be created.
+     * @return \Doctrine\ORM\Mapping\ClassMetadata 
+     */
     public function getEntityMetadata()
     {
         return $this->metadata;
+    }
+    
+    /**
+     * Returns the extra configuration array of the entity definition.
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
     
     private function normalizeFieldDef($def)
