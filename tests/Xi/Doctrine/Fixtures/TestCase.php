@@ -1,28 +1,43 @@
 <?php
+
 namespace Xi\Doctrine\Fixtures;
 
-abstract class TestCase extends \PHPUnit_Framework_TestCase
+use PHPUnit_Framework_TestCase,
+    Xi\Doctrine\TestDb;
+
+abstract class TestCase extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var TestDb
+     */
     protected $testDb;
-    
-    // Some fields public to allow access from the broken 5.3 closures.
-    
+
     /**
      * @var \Doctrine\ORM\EntityManager
      */
-    public $em;
-    
+    protected $em;
+
     /**
+     * Public to allow access from the broken 5.3 closures.
+     *
      * @var FixtureFactory
      */
     public $factory;
-    
+
     public function setUp()
     {
         parent::setUp();
-        $this->testDb = TestDb::get();
+
+        $here = dirname(__FILE__);
+
+        $this->testDb = new TestDb(
+            $here . '/TestEntity',
+            $here . '/TestProxy',
+            'Xi\Doctrine\Fixtures\TestProxy'
+        );
+
         $this->em = $this->testDb->createEntityManager();
-        
+
         $this->factory = new FixtureFactory($this->em);
         $this->factory->setEntityNamespace('Xi\Doctrine\Fixtures\TestEntity');
     }
