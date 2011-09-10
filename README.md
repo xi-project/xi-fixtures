@@ -19,8 +19,14 @@ Using the Zend FirePHP logger requires
 After installing the dependencies using the Zend FirePHP logger is easy. Just
 set the Zend FirePHP logger as a Doctrine SQL logger.
 
-        /** @var $config Doctrine\ORM\Configuration */
-        $config->setSQLLogger(new Xi\Doctrine\DBAL\Logging\ZendFirePhpLogger());
+```php
+<?php
+
+use Xi\Doctrine\DBAL\Logging\ZendFirePhpLogger;
+
+/** @var $config Doctrine\ORM\Configuration */
+$config->setSQLLogger(new ZendFirePhpLogger());
+```
 
 Done! Your Firebug console should now log SQL queries ran by Doctrine.
 
