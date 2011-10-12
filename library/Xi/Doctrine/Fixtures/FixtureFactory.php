@@ -83,7 +83,7 @@ class FixtureFactory
         $ent = $def->getEntityMetadata()->newInstance();
         $fieldValues = array();
         foreach ($def->getFieldDefs() as $fieldName => $fieldDef) {
-            $fieldValues[$fieldName] = isset($fieldOverrides[$fieldName])
+            $fieldValues[$fieldName] = array_key_exists($fieldName, $fieldOverrides)
                 ? $fieldOverrides[$fieldName]
                 : $fieldDef($this);
         }
