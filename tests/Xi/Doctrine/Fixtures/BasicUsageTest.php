@@ -1,6 +1,8 @@
 <?php
 namespace Xi\Doctrine\Fixtures;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 class BasicUsageTest extends TestCase
 {
     /**
@@ -67,7 +69,7 @@ class BasicUsageTest extends TestCase
             ))
             ->get('SpaceShip');
         
-        $this->assertTrue($ss->getCrew() instanceof \Doctrine\Common\Collections\ArrayCollection);
+        $this->assertTrue($ss->getCrew() instanceof ArrayCollection);
         $this->assertTrue($ss->getCrew()->isEmpty());
     }
     

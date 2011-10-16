@@ -1,6 +1,10 @@
 <?php
 namespace Xi\Doctrine\Fixtures;
 
+use Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping\ClassMetadata,
+    Exception;
+
 /**
  * An internal class that `FixtureFactory` uses to normalize and store entity definitions in.
  */
@@ -11,7 +15,7 @@ class EntityDef
     private $entityType;
     
     /**
-     * @var \Doctrine\ORM\Mapping\ClassMetadata
+     * @var ClassMetadata
      */
     private $metadata;
     
@@ -19,7 +23,7 @@ class EntityDef
     
     private $config;
     
-    public function __construct(\Doctrine\ORM\EntityManager $em, $name, $type, array $fieldDefs, array $config)
+    public function __construct(EntityManager $em, $name, $type, array $fieldDefs, array $config)
     {
         $this->name = $name;
         $this->entityType = $type;
@@ -38,7 +42,7 @@ class EntityDef
                     $this->metadata->hasAssociation($key)) {
                 $this->fieldDefs[$key] = $this->normalizeFieldDef($def);
             } else {
-                throw new \Exception('No such field in ' . $this->entityType . ': ' . $key);
+                throw new Exception('No such field in ' . $this->entityType . ': ' . $key);
             }
         }
     }
@@ -80,7 +84,7 @@ class EntityDef
     
     /**
      * Returns the Doctrine metadata for the entity to be created.
-     * @return \Doctrine\ORM\Mapping\ClassMetadata 
+     * @return ClassMetadata
      */
     public function getEntityMetadata()
     {
