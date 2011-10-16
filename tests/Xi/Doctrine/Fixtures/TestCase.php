@@ -3,7 +3,10 @@
 namespace Xi\Doctrine\Fixtures;
 
 use PHPUnit_Framework_TestCase,
-    Xi\Doctrine\TestDb;
+    PHPUnit_Framework_Error,
+    Xi\Doctrine\TestDb,
+    Doctrine\ORM\EntityManager,
+    Exception;
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
 {
@@ -13,7 +16,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     protected $testDb;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     protected $em;
 
@@ -49,12 +52,12 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     {
         try {
             $func();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
         if (!isset($e)) {
             $this->fail("Expected $exceptionType but nothing was thrown");
         }
-        if ($e instanceof \PHPUnit_Framework_Error) {
+        if ($e instanceof PHPUnit_Framework_Error) {
             $this->fail('Expected exception but got a PHP error: ' . $e->getMessage());
         }
         if (!($e instanceof $exceptionType)) {

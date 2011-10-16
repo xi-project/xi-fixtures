@@ -1,6 +1,8 @@
 <?php
 namespace Xi\Doctrine\Fixtures\TestEntity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @Entity
  */
@@ -30,7 +32,7 @@ class SpaceShip
     public function __construct($name)
     {
         $this->name = $name;
-        $this->crew = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->crew = new ArrayCollection();
         $this->constructorWasCalled = true;
     }
     

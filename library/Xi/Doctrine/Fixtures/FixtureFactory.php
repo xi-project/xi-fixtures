@@ -1,6 +1,11 @@
 <?php
 namespace Xi\Doctrine\Fixtures;
 
+use Doctrine\ORM\EntityManager,
+    Doctrine\Common\Collections\Collection,
+    Doctrine\Common\Collections\ArrayCollection,
+    Exception;
+
 /**
  * Creates Doctrine entities for use in tests.
  * 
@@ -9,7 +14,7 @@ namespace Xi\Doctrine\Fixtures;
 class FixtureFactory
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     protected $em;
     
@@ -34,7 +39,7 @@ class FixtureFactory
     protected $persist;
 
 
-    public function __construct(\Doctrine\ORM\EntityManager $em)
+    public function __construct(EntityManager $em)
     {
         $this->em = $em;
         
@@ -108,7 +113,7 @@ class FixtureFactory
     {
         $extraFields = array_diff(array_keys($fieldOverrides), array_keys($def->getFieldDefs()));
         if (!empty($extraFields)) {
-            throw new \Exception("Field(s) not in " . $def->getEntityType() . ": '" . implode("', '", $extraFields) . "'");
+            throw new Exception("Field(s) not in " . $def->getEntityType() . ": '" . implode("', '", $extraFields) . "'");
         }
     }
     
@@ -117,7 +122,7 @@ class FixtureFactory
         $metadata = $def->getEntityMetadata();
         
         if ($metadata->isCollectionValuedAssociation($fieldName)) {
-            $metadata->setFieldValue($ent, $fieldName, new \Doctrine\Common\Collections\ArrayCollection());
+            $metadata->setFieldValue($ent, $fieldName, new ArrayCollection());
         } else {
             $metadata->setFieldValue($ent, $fieldName, $fieldValue);
 
@@ -145,7 +150,7 @@ class FixtureFactory
     public function getAsSingleton($name, array $fieldOverrides = array())
     {
         if (isset($this->singletons[$name])) {
-            throw new \Exception("Already a singleton: $name");
+            throw new Exception("Already a singleton: $name");
         }
         $this->singletons[$name] = $this->get($name, $fieldOverrides);
         return $this->singletons[$name];
@@ -181,17 +186,17 @@ class FixtureFactory
     public function defineEntity($name, array $fieldDefs = array(), array $config = array())
     {
         if (isset($this->entityDefs[$name])) {
-            throw new \Exception("Entity '$name' already defined in fixture factory");
+            throw new Exception("Entity '$name' already defined in fixture factory");
         }
         
         $type = $this->addNamespace($name);
         if (!class_exists($type, true)) {
-            throw new \Exception("Not a class: $type");
+            throw new Exception("Not a class: $type");
         }
         
         $metadata = $this->em->getClassMetadata($type);
         if (!isset($metadata)) {
-            throw new \Exception("Unknown entity type: $type");
+            throw new Exception("Unknown entity type: $type");
         }
         
         $this->entityDefs[$name] = new EntityDef($this->em, $name, $type, $fieldDefs, $config);
@@ -212,7 +217,7 @@ class FixtureFactory
         if ($inverse) {
             $valueMetadata = $this->em->getClassMetadata(get_class($value));
             $collection = $valueMetadata->getFieldValue($value, $inverse);
-            if ($collection instanceof \Doctrine\Common\Collections\Collection) {
+            if ($collection instanceof Collection) {
                 $collection->add($entityBeingCreated);
             }
         }
