@@ -27,7 +27,7 @@ class TableLock
     /**
      * @return Repository
      */
-    protected getRepository()
+    protected function getRepository()
     {
         return $this->repository;
     }
