@@ -81,4 +81,40 @@ class BasicUsageTest extends TestCase
         $this->factory->defineEntity('SpaceShip');
         $this->assertNull($this->factory->get('SpaceShip')->getName());
     }
+
+    /**
+     * @test
+     */
+    public function entityIsDefinedToDefaultNamespace()
+    {
+        $this->factory->defineEntity('SpaceShip');
+        $this->factory->defineEntity('Person\User');
+
+        $this->assertEquals(
+            'Xi\Doctrine\Fixtures\TestEntity\SpaceShip',
+            get_class($this->factory->get('SpaceShip'))
+        );
+
+        $this->assertEquals(
+            'Xi\Doctrine\Fixtures\TestEntity\Person\User',
+            get_class($this->factory->get('Person\User'))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function entityCanBeDefinedToAnotherNamespace()
+    {
+        $this->factory->defineEntity(
+            '\Xi\Doctrine\Fixtures\TestAnotherEntity\Artist'
+        );
+
+        $this->assertEquals(
+            'Xi\Doctrine\Fixtures\TestAnotherEntity\Artist',
+            get_class($this->factory->get(
+                '\Xi\Doctrine\Fixtures\TestAnotherEntity\Artist'
+            ))
+        );
+    }
 }

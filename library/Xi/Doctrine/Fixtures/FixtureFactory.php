@@ -204,10 +204,18 @@ class FixtureFactory
         return $this;
     }
     
-    
+    /**
+     * @param  string $name
+     * @return string
+     */
     protected function addNamespace($name)
     {
-        $name = trim($name, '\\');
+        $name = rtrim($name, '\\');
+
+        if ($name[0] === '\\') {
+            return $name;
+        }
+
         return $this->entityNamespace . '\\' . $name;
     }
     
