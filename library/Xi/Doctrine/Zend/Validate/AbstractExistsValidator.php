@@ -4,7 +4,10 @@ namespace Xi\Doctrine\Zend\Validate;
 use Zend_Validate_Abstract;
 
 /**
- * @author     Mikko Hirvonen <mikko.hirvonen@brainalliance.com>
+ * @category   Xi
+ * @package    Doctrine
+ * @subpackage Zend
+ * @author     Mikko Hirvonen <mikko.petteri.hirvonen@gmail.com>
  */
 abstract class AbstractExistsValidator extends Zend_Validate_Abstract
 {

@@ -2,7 +2,10 @@
 namespace Xi\Doctrine\Zend\Validate;
 
 /**
- * @author     Mikko Hirvonen <mikko.hirvonen@brainalliance.com>
+ * @category   Xi
+ * @package    Doctrine
+ * @subpackage Zend
+ * @author     Mikko Hirvonen <mikko.petteri.hirvonen@gmail.com>
  */
 class NoRecordExistsValidator extends AbstractExistsValidator
 {
