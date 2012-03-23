@@ -5,57 +5,125 @@ namespace Doctrine\Tests\DBAL\Types;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\Tests\DBAL\Mocks;
 
-require_once __DIR__ . '/../../TestInit.php';
- 
-class ArrayTest extends \Doctrine\Tests\DbalTestCase
+Type::addType('statusarray', 'Xi\Doctrine\DBAL\Types\StatusArrayType');
+
+class StatusArrayTest extends \Doctrine\Tests\DbalTestCase
 {
-    protected
-        $_platform,
-        $_type;
+    protected $platform;
+    
+    /**
+     *
+     * @var Xi\Doctrine\DBAL\Types\StatusArrayType
+     */
+    protected $type;
 
     protected function setUp()
     {
-        $this->_platform = new \Doctrine\Tests\DBAL\Mocks\MockPlatform();
-        $this->_type = Type::getType('array');
-    }
-
-    public function tearDown()
-    {
-        error_reporting(-1); // reactive all error levels
-    }
-
-
-    public function testArrayConvertsToDatabaseValue()
-    {
-        $this->assertTrue(
-            is_string($this->_type->convertToDatabaseValue(array(), $this->_platform))
-        );
-    }
-
-    public function testArrayConvertsToPHPValue()
-    {
-        $this->assertTrue(
-            is_array($this->_type->convertToPHPValue(serialize(array()), $this->_platform))
-        );
-    }
-
-    public function testConversionFailure()
-    {
-        error_reporting( (E_ALL | E_STRICT) - \E_NOTICE );
-        $this->setExpectedException('Doctrine\DBAL\Types\ConversionException');
-        $this->_type->convertToPHPValue('abcdefg', $this->_platform);
-    }
-
-    public function testNullConversion()
-    {
-        $this->assertNull($this->_type->convertToPHPValue(null, $this->_platform));
+        $this->platform = new \Doctrine\Tests\DBAL\Mocks\MockPlatform();
+        $this->type = Type::getType('statusarray');
     }
 
     /**
-     * @group DBAL-73
+     * @test
      */
-    public function testFalseConversion()
+    public function getNameShouldReturnExpectedName()
     {
-        $this->assertFalse($this->_type->convertToPHPValue(serialize(false), $this->_platform));
+        $this->assertEquals('statusarray', $this->type->getName());
     }
+    
+    
+    /**
+     * @test
+     */
+    public function nullShouldAlwaysConvertToNull()
+    {
+        $this->assertNull($this->type->convertToDatabaseValue(null, $this->platform));
+        $this->assertNull($this->type->convertToPHPValue(null, $this->platform));
+        
+    }
+    
+    
+    /**
+     * @test
+     * @expectedException Doctrine\DBAL\Types\ConversionException
+     */
+    public function nonArrayOrNotNullShouldFailDatabaseConversion()
+    {
+        $value = 'lussenhof';
+        $this->type->convertToDatabaseValue($value, $this->platform);
+    }
+    
+    
+    public function provideStupidValues()
+    {
+        return array(
+            array('//'),
+            array('###'),
+            array('lussenhofen%meister'),
+        );
+    }
+    
+    
+    public function provideAcceptableValues()
+    {
+        return array(
+            array(
+                '[lussen.hofer];[lussen:meister];[1];[563]',
+                array('lussen.hofer', 'lussen:meister', 1, 563),
+            ),
+            array(
+                '[lussen.hofer]',
+                array('lussen.hofer'),
+            ),
+        );
+    }
+    
+    
+    /**
+     * @test
+     * @expectedException Doctrine\DBAL\Types\ConversionException
+     * @dataProvider provideStupidValues
+     */
+    public function invalidCharactersShouldFailDatabaseConversion($stupidValue)
+    {
+        $value = array($stupidValue);
+        $this->type->convertToDatabaseValue($value, $this->platform);
+    }
+    
+    
+    /**
+     * @test
+     * @dataProvider provideAcceptableValues
+     */
+    public function acceptableCharactersShouldPassDatabaseConversionAndReturnExpectedSerialization($expectedSerialization, $acceptableValue)
+    {
+        $serialization = $this->type->convertToDatabaseValue($acceptableValue, $this->platform);
+        $this->assertSame($expectedSerialization, $serialization);
+    }
+    
+    
+    public function provideSerializedValues()
+    {
+        return array(
+            array(
+                array('lussen', 'hofer', '645', 'meisten:lusdre', 'larva.lussutab.tussi'),
+                '[lussen];[hofer];[645];[meisten:lusdre];[larva.lussutab.tussi]',
+            )
+        );
+        
+    }
+    
+    
+    /**
+     * @test
+     * @dataProvider provideSerializedValues
+     */
+    public function valuesShouldDeserializeProperly($expected, $serialized)
+    {
+        $deserialized = $this->type->convertToPHPValue($serialized, $this->platform);
+        $this->assertSame($expected, $deserialized);
+    }
+    
+    
+
 }
