@@ -1,0 +1,16 @@
+{
+
+    "autoload": {
+        "psr-0": {
+            "Xi\\Tests": "./",
+            "Xi\\Doctrine": "../library/",
+            "Doctrine\\Tests": "vendor/doctrine/dbal/tests"
+        }
+    },
+
+    "require": {
+        "doctrine/orm": "=2.2.1",
+        "doctrine/dbal": "=2.2.1",
+        "doctrine/common": "=2.2.1"
+    }
+}
