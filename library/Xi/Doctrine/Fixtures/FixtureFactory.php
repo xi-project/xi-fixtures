@@ -80,6 +80,12 @@ class FixtureFactory
             return $this->singletons[$name];
         }
         
+        if (!isset($this->entityDefs[$name])) {
+             throw new Exception(
+                "Fixture '$name' is undefined. Define it before calling get()"
+             );
+        }
+        
         $def = $this->entityDefs[$name];
         $config = $def->getConfig();
         
