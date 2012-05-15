@@ -65,4 +65,15 @@ class IncorrectUsageTest extends TestCase
             ));
         });
     }
+    
+    /**
+     * @test
+     */
+    public function throwsWhenTryingToGetFixtureThatIsNotDefined()
+    {
+        $self = $this;
+        $this->assertThrows(function() use ($self) {
+            $self->factory->get('Undefined');
+        });
+    }
 }
