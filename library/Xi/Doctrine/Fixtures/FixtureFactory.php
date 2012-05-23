@@ -76,6 +76,25 @@ class FixtureFactory
      */
     public function get($name, array $fieldOverrides = array())
     {
+        $ent = $this->createFixture($name, $fieldOverrides);        
+        
+        if ($this->persist) {
+            $this->em->persist($ent);
+        }
+        
+        return $ent;
+    }
+    
+    /**
+     * Works like `get()`, but never persists Entity.
+     */
+    public function getUnpersisted($name, array $fieldOverrides = array())
+    {
+        return $this->createFixture($name, $fieldOverrides);
+    }
+    
+    protected function createFixture($name, array $fieldOverrides = array())
+    {
         if (isset($this->singletons[$name])) {
             return $this->singletons[$name];
         }
@@ -105,11 +124,6 @@ class FixtureFactory
         
         if (isset($config['afterCreate'])) {
             $config['afterCreate']($ent, $fieldValues);
-        }
-        
-        
-        if ($this->persist) {
-            $this->em->persist($ent);
         }
         
         return $ent;
