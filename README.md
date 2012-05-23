@@ -181,6 +181,9 @@ $factory->defineEntity('EntityName', array(
 // Getting an entity (new or singleton)
 $factory->get('EntityName', array('field' => 'value'));
 
+// If you have set persistOnGet to true and still want an unpersisted Entity
+$factory->getUnpersisted('EntityName', array('field' => 'value'));
+
 // Singletons
 $factory->getAsSingleton('EntityName', array('field' => 'value'));
 $factory->setSingleton('EntityName', $entity);
