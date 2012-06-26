@@ -11,7 +11,7 @@ error_reporting(E_ALL | E_STRICT);
 set_include_path(dirname(__DIR__) . '/library' . PATH_SEPARATOR . __DIR__ . PATH_SEPARATOR . get_include_path());
 
 // Fucktored to use dem autoloader created by da composer
-require './vendor/.composer/autoload.php';
+require '../vendor/autoload.php';
 
 
 

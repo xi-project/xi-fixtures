@@ -9,9 +9,17 @@
         }
     ],
     "require": {
-        "doctrine/common": "=v2.2.2",
-        "doctrine/dbal": "=v2.2.2",
-        "doctrine/orm": "=v2.2.2"
+        "doctrine/orm": "=2.2.1",
+        "doctrine/dbal": "=2.2.1",
+        "doctrine/common": "=2.2.1"
     },
+    "autoload": {
+        "psr-0": {
+            "Xi\\Tests": "./",
+            "Xi\\Doctrine": "../library/",
+            "Doctrine\\Tests": "vendor/doctrine/dbal/tests"
+        }
+    },
+
     "target-dir": "xi-doctrine/library"
 }
