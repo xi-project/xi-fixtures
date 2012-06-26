@@ -5,9 +5,9 @@ php:
   - 5.4
 
 before_script:
-  - cd tests
   - wget http://getcomposer.org/composer.phar
   - php composer.phar install
+  - cd tests
 
 script: phpunit
 
