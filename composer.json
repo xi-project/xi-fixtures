@@ -16,7 +16,7 @@
     "autoload": {
         "psr-0": {
             "Xi\\Tests": "./",
-            "Xi\\Doctrine": "../library/",
+            "Xi\\Doctrine": "xi-doctrine/library/",
             "Doctrine\\Tests": "vendor/doctrine/dbal/tests"
         }
     },
