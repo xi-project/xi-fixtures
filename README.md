@@ -5,7 +5,7 @@ the Xi project.
 
 If you want to use xi-doctrine, make it a submodule of your project and arrange for its `library/` to be on your include path.
 
-If you want to develop xi-doctrine, then clone it and run `git submodule update --init --recursive` to fetch Doctrine and its dependencies.
+If you want to develop xi-doctrine, then clone it and install dependencies with Composer.
 
 [![Build Status](https://secure.travis-ci.org/xi-project/xi-doctrine.png?branch=master)](http://travis-ci.org/xi-project/xi-doctrine)
 
