@@ -1,3 +1,4 @@
 /nbproject
-/tests/composer.phar
-/tests/composer.lock
+composer.phar
+composer.lock
+vendor
