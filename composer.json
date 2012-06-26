@@ -9,9 +9,7 @@
         }
     ],
     "require": {
-        "doctrine/orm": "=2.2.1",
-        "doctrine/dbal": "=2.2.1",
-        "doctrine/common": "=2.2.1"
+        "doctrine/orm": "=2.2.2"
     },
     "autoload": {
         "psr-0": {
