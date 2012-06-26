@@ -1,0 +1,17 @@
+{
+    "name": "xi/doctrine",
+    "description": "A set of utility classes for integration with Doctrine.",
+    "keywords": ["doctrine"],
+    "authors": [
+        {
+            "name": "xi-project",
+            "email": "xi.devs@gmail.com"
+        }
+    ],
+    "require": {
+        "doctrine/common": "=v2.2.2",
+        "doctrine/dbal": "=v2.2.2",
+        "doctrine/orm": "=v2.2.2"
+    },
+    "target-dir": "xi-doctrine/library"
+}
