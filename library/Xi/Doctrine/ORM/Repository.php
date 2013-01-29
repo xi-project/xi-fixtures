@@ -178,7 +178,7 @@ class Repository extends EntityRepository
      * optimistic lock to fail.
      *
      * FIXME: Only works on entities implementing VersionLockable and does not
-     * work in conjunction with the Doctrine @Version column.
+     * work in conjunction with the Doctrine "@Version" column.
      *
      * @param int $id
      * @param mixed $lockVersion
