@@ -1,7 +1,7 @@
 {
-    "name": "xi/doctrine",
-    "description": "A set of utility classes for integration with Doctrine.",
-    "keywords": ["doctrine"],
+    "name": "xi-fixturefactory",
+    "description": "Provides convenient creation of Doctrine entities in tests. If you're familiar with FactoryGirl for Ruby, then this is essentially the same thing for Doctrine/PHP",
+    "keywords": ["doctrine", "fixture", "test"],
     "authors": [
         {
             "name": "xi-project",
@@ -14,10 +14,10 @@
     "autoload": {
         "psr-0": {
             "Xi\\Tests": "./",
-            "Xi\\Doctrine": "xi-doctrine/library/",
+            "Xi\\FixtureFactory": "xi-fixturefactory/library/",
             "Doctrine\\Tests": "vendor/doctrine/dbal/tests"
         }
     },
 
-    "target-dir": "xi-doctrine"
+    "target-dir": "xi-fixturefactory"
 }
