@@ -20,8 +20,8 @@ We'll assume you have a base class for your tests that arranges a fresh `EntityM
 
 ```php
 <?php
-use Xi\Doctrine\Fixtures\FixtureFactory,
-    Xi\Doctrine\Fixtures\FieldDef;
+use Xi\FixtureFactory\FixtureFactory;
+use Xi\FixtureFactory\FieldDef;
 
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
@@ -48,8 +48,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         $this->factory->defineEntity('Group', array(
             'name' => FieldDef::sequence("group_%d")
         ));
-        
-        
+
         // If you want your created entities to be saved by default
         // then do the following. You can selectively re-enable or disable
         // this behavior in each test as well.
