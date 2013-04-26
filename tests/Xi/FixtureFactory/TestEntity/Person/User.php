@@ -1,9 +1,9 @@
 <?php
 
-namespace Xi\Doctrine\ORM\TestEntity;
+namespace Xi\FixtureFactory\TestEntity\Person;
 
 /**
- * @Entity(repositoryClass="Xi\Doctrine\ORM\Repository")
+ * @Entity
  */
 class User
 {
@@ -12,5 +12,5 @@ class User
      * @GeneratedValue(strategy="AUTO")
      * @Column(type="integer")
      */
-    public $id;
+    protected $id;
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Xi\Doctrine\Fixtures;
+namespace Xi\FixtureFactory;
 
 class SequenceTest extends TestCase
 {

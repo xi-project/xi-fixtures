@@ -1,5 +1,5 @@
 <?php
-namespace Xi\Doctrine\Fixtures;
+namespace Xi\FixtureFactory;
 
 use Doctrine\ORM\Query;
 
@@ -17,7 +17,7 @@ class PersistingTest extends TestCase
         $this->em->flush();
         
         $this->assertNotNull($ss->getId());
-        $this->assertEquals($ss, $this->em->find('Xi\Doctrine\Fixtures\TestEntity\SpaceShip', $ss->getId()));
+        $this->assertEquals($ss, $this->em->find('Xi\FixtureFactory\TestEntity\SpaceShip', $ss->getId()));
     }
     
     /**
@@ -56,7 +56,7 @@ class PersistingTest extends TestCase
         return $this->em
             ->createQueryBuilder()
             ->select('ss')
-            ->from('Xi\Doctrine\Fixtures\TestEntity\SpaceShip', 'ss')
+            ->from('Xi\FixtureFactory\TestEntity\SpaceShip', 'ss')
             ->getQuery();
     }
     

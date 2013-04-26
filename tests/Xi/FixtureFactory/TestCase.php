@@ -1,6 +1,6 @@
 <?php
 
-namespace Xi\Doctrine\Fixtures;
+namespace Xi\FixtureFactory;
 
 use PHPUnit_Framework_TestCase,
     PHPUnit_Framework_Error,
@@ -36,13 +36,13 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
         $this->testDb = new TestDb(
             $here . '/TestEntity',
             $here . '/TestProxy',
-            'Xi\Doctrine\Fixtures\TestProxy'
+            'Xi\FixtureFactory\TestProxy'
         );
 
         $this->em = $this->testDb->createEntityManager();
 
         $this->factory = new FixtureFactory($this->em);
-        $this->factory->setEntityNamespace('Xi\Doctrine\Fixtures\TestEntity');
+        $this->factory->setEntityNamespace('Xi\FixtureFactory\TestEntity');
     }
     
     /**
