@@ -1,4 +1,5 @@
 <?php
+
 namespace Xi\FixtureFactory;
 
 use Doctrine\Common\Collections\ArrayCollection;

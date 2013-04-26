@@ -2,11 +2,11 @@
 
 namespace Xi\FixtureFactory;
 
-use PHPUnit_Framework_TestCase,
-    PHPUnit_Framework_Error,
-    Xi\Doctrine\TestDb,
-    Doctrine\ORM\EntityManager,
-    Exception;
+use PHPUnit_Framework_TestCase;
+use PHPUnit_Framework_Error;
+use Xi\FixtureFactory\TestDb;
+use Doctrine\ORM\EntityManager;
+use Exception;
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
 {
