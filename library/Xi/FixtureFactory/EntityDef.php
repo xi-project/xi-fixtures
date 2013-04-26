@@ -1,9 +1,10 @@
 <?php
-namespace Xi\Doctrine\Fixtures;
 
-use Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping\ClassMetadata,
-    Exception;
+namespace Xi\FixtureFactory;
+
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Exception;
 
 /**
  * An internal class that `FixtureFactory` uses to normalize and store entity definitions in.

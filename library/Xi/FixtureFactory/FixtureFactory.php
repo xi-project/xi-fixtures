@@ -1,10 +1,11 @@
 <?php
-namespace Xi\Doctrine\Fixtures;
 
-use Doctrine\ORM\EntityManager,
-    Doctrine\Common\Collections\Collection,
-    Doctrine\Common\Collections\ArrayCollection,
-    Exception;
+namespace Xi\FixtureFactory;
+
+use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Exception;
 
 /**
  * Creates Doctrine entities for use in tests.
