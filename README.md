@@ -1,42 +1,6 @@
-# Xi Doctrine
+# Xi FixtureFactory
 
-A set of utility classes for integration with Doctrine. This package is part of
-the Xi project.
-
-If you want to use xi-doctrine, make it a submodule of your project and arrange for its `library/` to be on your include path.
-
-If you want to develop xi-doctrine, then clone it and install dependencies with Composer.
-
-[![Build Status](https://secure.travis-ci.org/xi-project/xi-doctrine.png?branch=master)](http://travis-ci.org/xi-project/xi-doctrine)
-
-
-Zend FirePHP logger
--------------------
-
-Using the Zend FirePHP logger requires
-
-* Zend Framework's Zend_Wildfire_Plugin_FirePhp component and all of it's dependencies.
-* Firebug FirePHP plugin (http://www.firephp.org)
-
-After installing the dependencies using the Zend FirePHP logger is easy. Just
-set the Zend FirePHP logger as a Doctrine SQL logger.
-
-```php
-<?php
-
-use Xi\Doctrine\DBAL\Logging\ZendFirePhpLogger;
-
-/** @var $config Doctrine\ORM\Configuration */
-$config->setSQLLogger(new ZendFirePhpLogger());
-```
-
-Done! Your Firebug console should now log SQL queries ran by Doctrine.
-
-
-FixtureFactory
---------------
-
-`Xi\Doctrine\Fixtures\FixtureFactory` provides convenient creation of Doctrine entities in tests. If you're familiar with [FactoryGirl](https://github.com/thoughtbot/factory_girl) for Ruby, then this is essentially the same thing for Doctrine/PHP.
+`Xi\FixtureFactory` provides convenient creation of Doctrine entities in tests. If you're familiar with [FactoryGirl](https://github.com/thoughtbot/factory_girl) for Ruby, then this is essentially the same thing for Doctrine/PHP.
 
 ### Motivation ###
 
@@ -91,7 +55,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         // this behavior in each test as well.
         // It's recommended to only enable this in tests that need it.
         // In any case, you'll need to call flush() yourself.
-        //$this->factory->persistOnGet();
+        $this->factory->persistOnGet();
     }
 }
 ```
