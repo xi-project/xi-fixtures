@@ -44,11 +44,11 @@ class FixtureFactory
      */
     public function __construct(EntityManager $em)
     {
-        $this->em              = $em;
+        $this->em = $em;
         $this->entityNamespace = '';
-        $this->entityDefs      = array();
-        $this->singletons      = array();
-        $this->persist         = false;
+        $this->entityDefs = array();
+        $this->singletons = array();
+        $this->persist = false;
     }
     
     /**
