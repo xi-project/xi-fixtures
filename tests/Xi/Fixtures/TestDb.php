@@ -1,6 +1,6 @@
 <?php
 
-namespace Xi\FixtureFactory;
+namespace Xi\Fixtures;
 
 use Doctrine\ORM\EntityManager,
     Doctrine\ORM\Tools\SchemaTool,

@@ -1,6 +1,6 @@
 <?php
 
-namespace Xi\FixtureFactory\TestEntity\Person;
+namespace Xi\Fixtures\TestEntity\Person;
 
 /**
  * @Entity

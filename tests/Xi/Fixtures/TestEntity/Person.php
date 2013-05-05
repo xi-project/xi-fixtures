@@ -1,5 +1,5 @@
 <?php
-namespace Xi\FixtureFactory\TestEntity;
+namespace Xi\Fixtures\TestEntity;
 
 /**
  * @Entity

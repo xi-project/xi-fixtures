@@ -1,6 +1,6 @@
 <?php
 
-namespace Xi\FixtureFactory;
+namespace Xi\Fixtures;
 
 /**
  * Contains static methods to define fields as sequences, references etc.

@@ -1,5 +1,5 @@
 <?php
-namespace Xi\FixtureFactory;
+namespace Xi\Fixtures;
 
 class SingletonTest extends TestCase
 {
