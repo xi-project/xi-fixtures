@@ -1,10 +1,10 @@
 <?php
 
-namespace Xi\FixtureFactory;
+namespace Xi\Fixtures;
 
 use PHPUnit_Framework_TestCase;
 use PHPUnit_Framework_Error;
-use Xi\FixtureFactory\TestDb;
+use Xi\Fixtures\TestDb;
 use Doctrine\ORM\EntityManager;
 use Exception;
 
@@ -36,13 +36,13 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
         $this->testDb = new TestDb(
             $here . '/TestEntity',
             $here . '/TestProxy',
-            'Xi\FixtureFactory\TestProxy'
+            'Xi\Fixtures\TestProxy'
         );
 
         $this->em = $this->testDb->createEntityManager();
 
         $this->factory = new FixtureFactory($this->em);
-        $this->factory->setEntityNamespace('Xi\FixtureFactory\TestEntity');
+        $this->factory->setEntityNamespace('Xi\Fixtures\TestEntity');
     }
     
     /**

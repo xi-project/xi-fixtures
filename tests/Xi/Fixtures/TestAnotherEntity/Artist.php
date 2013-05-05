@@ -1,6 +1,6 @@
 <?php
 
-namespace Xi\FixtureFactory\TestAnotherEntity;
+namespace Xi\Fixtures\TestAnotherEntity;
 
 /**
  * @Entity

@@ -1,6 +1,6 @@
-# Xi FixtureFactory
+# Xi Fixtures
 
-`Xi\FixtureFactory` provides convenient creation of Doctrine entities in tests. If you're familiar with [FactoryGirl](https://github.com/thoughtbot/factory_girl) for Ruby, then this is essentially the same thing for Doctrine/PHP.
+`FixtureFactory` provides convenient creation of Doctrine entities in tests. If you're familiar with [FactoryGirl](https://github.com/thoughtbot/factory_girl) for Ruby, then this is essentially the same thing for Doctrine/PHP.
 
 ### Motivation ###
 
@@ -20,8 +20,8 @@ We'll assume you have a base class for your tests that arranges a fresh `EntityM
 
 ```php
 <?php
-use Xi\FixtureFactory\FixtureFactory;
-use Xi\FixtureFactory\FieldDef;
+use Xi\Fixtures\FixtureFactory;
+use Xi\Fixtures\FieldDef;
 
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
