@@ -16,9 +16,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Xi\\Tests": "./",
-            "Xi\\FixtureFactory": "xi-fixturefactory/library/",
-            "Doctrine\\Tests": "vendor/doctrine/dbal/tests"
+            "Xi\\FixtureFactory": "xi-fixturefactory/library/"
         }
     },
 
