@@ -147,6 +147,25 @@ $factory->defineEntity('User', array(
 ));
 ```
 
+You can define multiple versions of the same entity under different names by giving the 'entityType' option.
+
+```php
+<?php
+$factory->defineEntity('NormalUser', array(
+    'username' => FieldDef::sequence("user_%d"),
+    'administrator' => false
+), array(
+    'entityType' => 'User'
+));
+
+$factory->defineEntity('Administrator', array(
+    'username' => FieldDef::sequence("admin_%d"),
+    'administrator' => true
+), array(
+    'entityType' => 'User'
+));
+```
+
 ### API reference ###
 
 ```php
@@ -166,7 +185,8 @@ $factory->defineEntity('EntityName', array(
 ), array(
     'afterCreate' => function($entity, $fieldValues) {
         // ...
-    }
+    },
+    'entityType' => 'Type' // or '\Namespaced\Type'. Defaults to the 1st parameter.
 ));
 
 // Getting an entity (new or singleton)
