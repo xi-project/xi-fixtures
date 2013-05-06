@@ -23,8 +23,8 @@ class FieldDef
      * replaced by the counter value. If the string does not contain "%d"
      * then the number is simply appended to the parameter.
      * 
-     * @param callable|string $funcOrString The function or pattern to generate a value from.
-     * @param int $firstNum The first number to use.
+     * @param  callable|string $funcOrString The function or pattern to generate a value from.
+     * @param  int             $firstNum The first number to use.
      * @return callable
      */
     public static function sequence($funcOrString, $firstNum = 1)
@@ -55,7 +55,7 @@ class FieldDef
      * Normally this means that the field gets a fresh instance of the named
      * entity. If a singleton has been defined, `get()` will return that.
      * 
-     * @param string $name The name of the entity to get.
+     * @param  string   $name The name of the entity to get.
      * @return callable
      */
     public static function reference($name)

@@ -55,12 +55,17 @@ class FixtureFactory
     
     /**
      * Sets the namespace to be prefixed to all entity names passed to this class.
+     *
+     * @param string
      */
     public function setEntityNamespace($namespace)
     {
         $this->entityNamespace = trim($namespace, '\\');
     }
-    
+
+    /**
+     * @return string
+     */
     public function getEntityNamespace()
     {
         return $this->entityNamespace;
@@ -73,6 +78,10 @@ class FixtureFactory
      * a singleton with the entity name. See `getAsSingleton()`.
      * 
      * If you've called `persistOnGet()` then the entity is also persisted.
+     *
+     * @param  string $name
+     * @param  array  $fieldOverrides
+     * @return mixed
      */
     public function get($name, array $fieldOverrides = array())
     {
@@ -87,6 +96,10 @@ class FixtureFactory
     
     /**
      * Works like `get()`, but never persists Entity.
+     *
+     * @param  string $name
+     * @param  array  $fieldOverrides
+     * @return mixed
      */
     public function getUnpersisted($name, array $fieldOverrides = array())
     {
@@ -162,6 +175,8 @@ class FixtureFactory
      * Sets whether `get()` should automatically persist the entity it creates.
      * By default it does not. In any case, you still need to call
      * flush() yourself.
+     *
+     * @param boolean $enabled
      */
     public function persistOnGet($enabled = true)
     {
@@ -172,6 +187,11 @@ class FixtureFactory
      * A shorthand combining `get()` and `setSingleton()`.
      * 
      * It's illegal to call this if `$name` already has a singleton.
+     *
+     * @param  string    $name
+     * @param  array     $fieldOverrides
+     * @return mixed
+     * @throws Exception
      */
     public function getAsSingleton($name, array $fieldOverrides = array())
     {
@@ -186,6 +206,9 @@ class FixtureFactory
      * Sets `$entity` to be the singleton for `$name`.
      * 
      * This causes `get($name)` to return `$entity`.
+     *
+     * @param string $name
+     * @param Object $entity
      */
     public function setSingleton($name, $entity)
     {
@@ -196,6 +219,8 @@ class FixtureFactory
      * Unsets the singleton for `$name`.
      * 
      * This causes `get($name)` to return new entities again.
+     *
+     * @param string $name
      */
     public function unsetSingleton($name)
     {
@@ -205,7 +230,7 @@ class FixtureFactory
     /**
      * Starts defining how to create an entity.
      *
-     * @param string $name The name by which these entities can be retrieved.
+     * @param  string    $name The name by which these entities can be retrieved.
      * @throws Exception
      * @return DSL
      */
