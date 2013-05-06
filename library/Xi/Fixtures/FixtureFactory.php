@@ -39,17 +39,15 @@ class FixtureFactory
      */
     protected $persist;
 
-
+    /**
+     * @param EntityManager $em
+     */
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
-        
         $this->entityNamespace = '';
-        
         $this->entityDefs = array();
-        
         $this->singletons = array();
-        
         $this->persist = false;
     }
     
@@ -66,7 +64,6 @@ class FixtureFactory
         return $this->entityNamespace;
     }
     
-    
     /**
      * Get an entity and its dependencies.
      * 
@@ -77,7 +74,7 @@ class FixtureFactory
      */
     public function get($name, array $fieldOverrides = array())
     {
-        $ent = $this->createFixture($name, $fieldOverrides);        
+        $ent = $this->createFixture($name, $fieldOverrides);
         
         if ($this->persist) {
             $this->em->persist($ent);
@@ -102,7 +99,7 @@ class FixtureFactory
         
         if (!isset($this->entityDefs[$name])) {
              throw new Exception(
-                "Fixture '$name' is undefined. Define it before calling get()"
+                 "Fixture '$name' is undefined. Define it before calling get()"
              );
         }
         
@@ -134,7 +131,9 @@ class FixtureFactory
     {
         $extraFields = array_diff(array_keys($fieldOverrides), array_keys($def->getFieldDefs()));
         if (!empty($extraFields)) {
-            throw new Exception("Field(s) not in " . $def->getEntityType() . ": '" . implode("', '", $extraFields) . "'");
+            throw new Exception(
+                "Field(s) not in " . $def->getEntityType() . ": '" . implode("', '", $extraFields) . "'"
+            );
         }
     }
     
@@ -240,7 +239,8 @@ class FixtureFactory
         return $this->entityNamespace . '\\' . $name;
     }
     
-    protected function updateCollectionSideOfAssocation($entityBeingCreated, $metadata, $fieldName, $value) {
+    protected function updateCollectionSideOfAssocation($entityBeingCreated, $metadata, $fieldName, $value)
+    {
         $assoc = $metadata->getAssociationMapping($fieldName);
         $inverse = $assoc['inversedBy'];
         if ($inverse) {

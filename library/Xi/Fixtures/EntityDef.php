@@ -48,11 +48,14 @@ class EntityDef
         }
     }
     
-    private function defaultDefsFromMetadata() {
+    private function defaultDefsFromMetadata()
+    {
         $allFields = array_merge($this->metadata->getFieldNames(), $this->metadata->getAssociationNames());
         foreach ($allFields as $fieldName) {
             if (!isset($this->fieldDefs[$fieldName])) {
-                $this->fieldDefs[$fieldName] = function() { return null; };
+                $this->fieldDefs[$fieldName] = function () {
+                    return null;
+                };
             }
         }
     }
@@ -106,7 +109,9 @@ class EntityDef
         if (is_callable($def)) {
             return $this->ensureInvokable($def);
         } else {
-            return function() use ($def) { return $def; };
+            return function () use ($def) {
+                return $def;
+            };
         }
     }
     
@@ -115,7 +120,7 @@ class EntityDef
         if (method_exists($f, '__invoke')) {
             return $f;
         } else {
-            return function() use ($f) {
+            return function () use ($f) {
                 return call_user_func_array($f, func_get_args());
             };
         }
