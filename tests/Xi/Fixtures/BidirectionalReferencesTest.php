@@ -8,10 +8,9 @@ class BidirectionalReferencesTest extends TestCase
      */
     public function bidirectionalOntToManyReferencesAreAssignedBothWays()
     {
-        $this->factory->defineEntity('SpaceShip');
-        $this->factory->defineEntity('Person', array(
-            'spaceShip' => FieldDef::reference('SpaceShip')
-        ));
+        $this->factory->define('SpaceShip');
+        $this->factory->define('Person')
+            ->reference('spaceShip', 'SpaceShip');
         
         $person = $this->factory->get('Person');
         $ship = $person->getSpaceShip();

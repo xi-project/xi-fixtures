@@ -2,6 +2,7 @@
 namespace Xi\Fixtures\FixtureFactory;
 
 use Xi\Fixtures\FixtureFactory;
+use Xi\Fixtures\FieldDef;
 
 /**
  * Defines the methods that come after `define()` in FixtureFactory's DSL.

@@ -30,6 +30,7 @@ class BasicUsageTest extends TestCase
             ->field('name', function() use (&$name) { return "M/S $name"; });
         
         $this->assertEquals('M/S Star', $this->factory->get('SpaceShip')->getName());
+
         $name = "Superstar";
         $this->assertEquals('M/S Superstar', $this->factory->get('SpaceShip')->getName());
     }
