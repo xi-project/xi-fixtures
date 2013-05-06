@@ -5,9 +5,9 @@ namespace Xi\Fixtures;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Exception;
 use Xi\Fixtures\FixtureFactory\DSL;
 use Xi\Fixtures\FixtureFactory\EntityDef;
+use Exception;
 
 /**
  * Creates Doctrine entities for use in tests.
@@ -226,9 +226,9 @@ class FixtureFactory
      *
      * @deprecated This will be made private in 2.x.
      *
-     * @param string $name The name of the entity to define.
-     * @param array $fieldDefs An array mapping field names to functions or constant values.
-     * @param array $config Configuration options.
+     * @param  string         $name The name of the entity to define.
+     * @param  array          $fieldDefs An array mapping field names to functions or constant values.
+     * @param  array          $config Configuration options.
      * @throws Exception
      * @return FixtureFactory
      */
