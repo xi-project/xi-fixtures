@@ -7,7 +7,7 @@ class TransitiveReferencesTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        
+
         $this->factory->define('Person')
             ->reference('spaceShip', 'SpaceShip');
 

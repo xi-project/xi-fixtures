@@ -124,5 +124,4 @@ class DSL
         $this->options['afterCreate'] = $callback;
         return $this;
     }
-
 }
