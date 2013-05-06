@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Exception;
+use Xi\Fixtures\FixtureFactory\DSL;
+use Xi\Fixtures\FixtureFactory\EntityDef;
 
 /**
  * Creates Doctrine entities for use in tests.
@@ -102,6 +104,10 @@ class FixtureFactory
                  "Fixture '$name' is undefined. Define it before calling get()"
              );
         }
+
+        if ($this->entityDefs[$name] instanceof DSL) {
+            $this->entityDefs[$name]->finish();
+        }
         
         $def = $this->entityDefs[$name];
         $config = $def->getConfig();
@@ -195,17 +201,40 @@ class FixtureFactory
     {
         unset($this->singletons[$name]);
     }
-    
+
     /**
-     * Defines how to create a default entity of type `$name`.
-     * 
-     * See the readme for a tutorial.
-     * 
+     * Starts defining how to create an entity.
+     *
+     * @param string $name The name by which these entities can be retrieved.
+     * @throws Exception
+     * @return DSL
+     */
+    public function define($name)
+    {
+        if (isset($this->entityDefs[$name])) {
+            throw new Exception("Entity '$name' already defined in fixture factory");
+        }
+
+        $this->entityDefs[$name] = new DSL($this, $name);
+        return $this->entityDefs[$name];
+    }
+
+    /**
+     * Please use `define()` instead.
+     *
+     * This method is retained for backwards compatibility and internal use.
+     *
+     * @deprecated This will be made private in 2.x.
+     *
+     * @param string $name The name of the entity to define.
+     * @param array $fieldDefs An array mapping field names to functions or constant values.
+     * @param array $config Configuration options.
+     * @throws Exception
      * @return FixtureFactory
      */
     public function defineEntity($name, array $fieldDefs = array(), array $config = array())
     {
-        if (isset($this->entityDefs[$name])) {
+        if (isset($this->entityDefs[$name]) && !($this->entityDefs[$name] instanceof DSL)) {
             throw new Exception("Entity '$name' already defined in fixture factory");
         }
 
@@ -239,7 +268,7 @@ class FixtureFactory
 
         return $this->entityNamespace . '\\' . $name;
     }
-    
+
     protected function updateCollectionSideOfAssocation($entityBeingCreated, $metadata, $fieldName, $value)
     {
         $assoc = $metadata->getAssociationMapping($fieldName);

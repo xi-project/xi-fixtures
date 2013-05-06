@@ -4,6 +4,10 @@ namespace Xi\Fixtures;
 
 /**
  * Contains static methods to define fields as sequences, references etc.
+ *
+ * You don't need to call this if you use the DSL.
+ *
+ * @deprecated These will be removed in 2.x.
  */
 class FieldDef
 {
