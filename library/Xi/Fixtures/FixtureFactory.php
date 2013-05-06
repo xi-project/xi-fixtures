@@ -81,7 +81,7 @@ class FixtureFactory
      *
      * @param  string $name
      * @param  array  $fieldOverrides
-     * @return mixed
+     * @return Object
      */
     public function get($name, array $fieldOverrides = array())
     {
@@ -99,7 +99,7 @@ class FixtureFactory
      *
      * @param  string $name
      * @param  array  $fieldOverrides
-     * @return mixed
+     * @return Object
      */
     public function getUnpersisted($name, array $fieldOverrides = array())
     {
@@ -190,7 +190,7 @@ class FixtureFactory
      *
      * @param  string    $name
      * @param  array     $fieldOverrides
-     * @return mixed
+     * @return Object
      * @throws Exception
      */
     public function getAsSingleton($name, array $fieldOverrides = array())
@@ -198,8 +198,8 @@ class FixtureFactory
         if (isset($this->singletons[$name])) {
             throw new Exception("Already a singleton: $name");
         }
-        $this->singletons[$name] = $this->get($name, $fieldOverrides);
-        return $this->singletons[$name];
+
+        return $this->singletons[$name] = $this->get($name, $fieldOverrides);
     }
     
     /**
