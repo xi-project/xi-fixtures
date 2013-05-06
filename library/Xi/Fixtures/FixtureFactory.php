@@ -208,8 +208,9 @@ class FixtureFactory
         if (isset($this->entityDefs[$name])) {
             throw new Exception("Entity '$name' already defined in fixture factory");
         }
-        
-        $type = $this->addNamespace($name);
+
+        $type = isset($config['entityType']) ? $config['entityType'] : $name;
+        $type = $this->addNamespace($type);
         if (!class_exists($type, true)) {
             throw new Exception("Not a class: $type");
         }
