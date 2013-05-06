@@ -27,7 +27,7 @@ class BasicUsageTest extends TestCase
         $name = "Star";
         $this->factory
             ->define('SpaceShip')
-            ->field('name', function() use (&$name) { return "M/S $name"; });
+            ->field('name', function () use (&$name) { return "M/S $name"; });
         
         $this->assertEquals('M/S Star', $this->factory->get('SpaceShip')->getName());
 

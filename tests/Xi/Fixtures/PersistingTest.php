@@ -63,5 +63,4 @@ class PersistingTest extends TestCase
             ->from('Xi\Fixtures\TestEntity\SpaceShip', 'ss')
             ->getQuery();
     }
-    
 }

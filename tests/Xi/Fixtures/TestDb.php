@@ -2,10 +2,10 @@
 
 namespace Xi\Fixtures;
 
-use Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Tools\SchemaTool,
-    Doctrine\Common\Cache\ArrayCache,
-    Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\ORM\Configuration;
 
 /**
  * @category Xi
