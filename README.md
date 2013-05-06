@@ -166,7 +166,8 @@ $factory->defineEntity('EntityName', array(
 ), array(
     'afterCreate' => function($entity, $fieldValues) {
         // ...
-    }
+    },
+    'entityType' => 'Type' // or '\Namespaced\Type'. Defaults to the 1st parameter.
 ));
 
 // Getting an entity (new or singleton)
