@@ -10,7 +10,8 @@ class PersistingTest extends TestCase
      */
     public function automaticPersistCanBeTurnedOn()
     {
-        $this->factory->defineEntity('SpaceShip', array('name' => 'Zeta'));
+        $this->factory->define('SpaceShip')
+            ->field('name', 'Zeta');
         
         $this->factory->persistOnGet();
         $ss = $this->factory->get('SpaceShip');
@@ -25,7 +26,9 @@ class PersistingTest extends TestCase
      */
     public function doesNotPersistByDefault()
     {
-        $this->factory->defineEntity('SpaceShip', array('name' => 'Zeta'));
+        $this->factory->define('SpaceShip')
+            ->field('name', 'Zeta');
+
         $ss = $this->factory->get('SpaceShip');
         $this->em->flush();
         
@@ -38,8 +41,9 @@ class PersistingTest extends TestCase
      */
     public function isAbleToGetUnpersistedEntityEvenIfPersistingIsOn()
     {
-        $this->factory->defineEntity('SpaceShip', array('name' => 'Normandy'));        
-        
+        $this->factory->define('SpaceShip')
+            ->field('name', 'Normandy');
+
         $this->factory->persistOnGet();
         $ss = $this->factory->getUnpersisted('SpaceShip');
         $this->em->flush();

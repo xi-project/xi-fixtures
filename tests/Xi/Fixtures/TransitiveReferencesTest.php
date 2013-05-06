@@ -4,15 +4,17 @@ namespace Xi\Fixtures;
 
 class TransitiveReferencesTest extends TestCase
 {
-    private function simpleSetup()
+    public function setUp()
     {
-        $this->factory->defineEntity('Person', array(
-            'spaceShip' => FieldDef::reference('SpaceShip'),
-        ));
-        $this->factory->defineEntity('Badge', array(
-            'owner' => FieldDef::reference('Person')
-        ));
-        $this->factory->defineEntity('SpaceShip');
+        parent::setUp();
+        
+        $this->factory->define('Person')
+            ->reference('spaceShip', 'SpaceShip');
+
+        $this->factory->define('Badge')
+            ->reference('owner', 'Person');
+
+        $this->factory->define('SpaceShip');
     }
     
     /**
@@ -20,8 +22,6 @@ class TransitiveReferencesTest extends TestCase
      */
     public function referencesGetInstantiatedTransitively()
     {
-        $this->simpleSetup();
-        
         $badge = $this->factory->get('Badge');
         
         $this->assertNotNull($badge->getOwner()->getSpaceShip());
@@ -32,8 +32,6 @@ class TransitiveReferencesTest extends TestCase
      */
     public function transitiveReferencesWorkWithSingletons()
     {
-        $this->simpleSetup();
-        
         $this->factory->getAsSingleton('SpaceShip');
         $badge1 = $this->factory->get('Badge');
         $badge2 = $this->factory->get('Badge');
