@@ -45,8 +45,8 @@ class EntityTypeTest extends TestCase
             ->sequence('name', 'Sailor #%d');
 
         $s1 = $this->factory->get('Sailor');
-        $cap = $this->factory->get('Captain');
         $s2 = $this->factory->get('Sailor');
+        $cap = $this->factory->get('Captain');
 
         $this->assertEquals('TheCaptain', $cap->getName());
         $this->assertEquals('Sailor #1', $s1->getName());
