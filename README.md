@@ -1,24 +1,48 @@
 # Xi Fixtures
 
-`FixtureFactory` provides convenient creation of Doctrine entities in tests. If you're familiar with [FactoryGirl](https://github.com/thoughtbot/factory_girl) for Ruby, then this is essentially the same thing for Doctrine/PHP.
+Xi Fixtures provides convenient and scalable creation of Doctrine entities in tests. If you're familiar with [FactoryGirl](https://github.com/thoughtbot/factory_girl) for Ruby, then this is essentially the same thing for Doctrine/PHP.
 
 [![Build Status](https://travis-ci.org/xi-project/xi-fixtures.png?branch=master)](https://travis-ci.org/xi-project/xi-fixtures)
 
+### In a nutshell ###
+
+Imagine we're setting up a test and need 3 users in the database. With Xi Fixtures we can specify in one place that each user needs a unique username and needs to belong to a group (via a one-to-many relation):
+
+```php
+$this->factory->defineEntity('User', array(
+    'username' => FieldDef::sequence("user_%d"),
+    'administrator' => false,
+    'group' => FieldDef::reference('Group')
+));
+```
+
+Now in our tests we can simply say:
+
+```php
+$user1 = $this->factory->get('User');
+$user2 = $this->factory->get('User');
+
+// We can selectively override attributes
+$user3 = $this->factory->get('User', array('administrator' => true));
+
+testStuffWith($user1, $user2, $user3);
+```
+
 ### Motivation ###
 
-Many web applications have non-trivial database structures with lots of dependencies between tables. A component of such an application might deal with entities from only one or two tables, but the entities may depend on a complex entity graph to be useful or pass validation.
+Many web applications have non-trivial database structures with lots of dependencies between tables. One component of such an application might deal with entities from only one or two tables, but those entities may depend on a complex entity graph to be useful or to pass validation.
 
-For instance, a `User` may be a member of a `Group`, which is part of an `Organization`, which in turn depends on five different tables describing who-knows-what about the organization. You are writing a component that change's the user's password and are currently uninterested in groups, organizations and their dependencies. How do you set up your test?
+For instance, a `User` may be a member of a `Group`, which is part of an `Organization`, which in turn depends on five different tables describing who-knows-what about the organization. You are writing a component that changes the user's password and are currently uninterested in groups, organizations and their dependencies. How do you set up your test?
 
 1. Do you create all dependencies for `Organization` and `Group` to get a valid `User` in your `setUp()`? No, that would be horribly tedious and verbose.
-2. Do you make a shared fixture for all your tests that includes an example organization with satisifed dependencies? No, that would make the fixture extremely fragile.
-3. Do you use mock objects? Sure, where practical. In many cases, however, the code you're testing interacts with the entities in such a complex way that mocking them sufficiently is impractical.
+2. Do you make a shared fixture for all your tests that includes an example organization with satisifed dependencies? No, having loads of tests depend on a single fixture makes changing that fixture later difficult.
+3. Do you use mock objects? Sure, but in many cases, however, the code you're testing interacts with the entities in such a complex way that mocking them sufficiently is impractical.
 
-`FixtureFactory` is a middle ground between *(1)* and *(2)*. You specify how to generate your entities and their dependencies in one central place but explicitly create them in your tests, overriding only the fields you want.
+Xi Fixtures is a middle ground between *(1)* and *(2)*. You specify how to generate your entities and their dependencies in one central place but explicitly create them in your tests, overriding only the fields you want.
 
 ### Tutorial ###
 
-We'll assume you have a base class for your tests that arranges a fresh `EntityManager` connected to a minimally initialized blank test database. A simple factory setup looks like this.
+We'll assume you have a base class for your tests that sets up a fresh `EntityManager` connected to a minimally initialized blank test database. A simple factory setup looks like this.
 
 ```php
 <?php
@@ -110,7 +134,7 @@ It's highly recommended to create singletons only in the setups of individual te
 
 ### Advanced ###
 
-You can give an 'afterCreate' callback to be called after an entity is created and its fields are set. Here you can, for instance, invoke the entity's constructor, since `FixtureFactory` doesn't do that by default.
+You can give an 'afterCreate' callback to be called after an entity is created and its fields are set. Here you can, for instance, invoke the entity's constructor. `FixtureFactory` doesn't invoke the constructor by default since Doctrine doesn't either.
 
 ```php
 <?php
