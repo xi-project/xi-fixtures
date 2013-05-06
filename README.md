@@ -2,6 +2,8 @@
 
 `FixtureFactory` provides convenient creation of Doctrine entities in tests. If you're familiar with [FactoryGirl](https://github.com/thoughtbot/factory_girl) for Ruby, then this is essentially the same thing for Doctrine/PHP.
 
+[![Build Status](https://travis-ci.org/xi-project/xi-fixtures.png?branch=master)](https://travis-ci.org/xi-project/xi-fixtures)
+
 ### Motivation ###
 
 Many web applications have non-trivial database structures with lots of dependencies between tables. A component of such an application might deal with entities from only one or two tables, but the entities may depend on a complex entity graph to be useful or pass validation.
