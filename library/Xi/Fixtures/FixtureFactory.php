@@ -56,7 +56,7 @@ class FixtureFactory
     /**
      * Sets the namespace to be prefixed to all entity names passed to this class.
      *
-     * @param string
+     * @param string $namespace
      */
     public function setEntityNamespace($namespace)
     {
@@ -81,7 +81,7 @@ class FixtureFactory
      *
      * @param  string $name
      * @param  array  $fieldOverrides
-     * @return Object
+     * @return object
      */
     public function get($name, array $fieldOverrides = array())
     {
@@ -99,7 +99,7 @@ class FixtureFactory
      *
      * @param  string $name
      * @param  array  $fieldOverrides
-     * @return Object
+     * @return object
      */
     public function getUnpersisted($name, array $fieldOverrides = array())
     {
@@ -190,7 +190,7 @@ class FixtureFactory
      *
      * @param  string    $name
      * @param  array     $fieldOverrides
-     * @return Object
+     * @return object
      * @throws Exception
      */
     public function getAsSingleton($name, array $fieldOverrides = array())
@@ -208,7 +208,7 @@ class FixtureFactory
      * This causes `get($name)` to return `$entity`.
      *
      * @param string $name
-     * @param Object $entity
+     * @param object $entity
      */
     public function setSingleton($name, $entity)
     {

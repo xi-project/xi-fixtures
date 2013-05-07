@@ -27,7 +27,7 @@ class ExtraConfigurationTest extends TestCase
         $this->factory->define('SpaceShip')
             ->field('name', 'Foo')
             ->afterCreate(function(TestEntity\SpaceShip $ss, array $fieldValues) {
-                    $ss->__construct($fieldValues['name'] . 'Master');
+                $ss->__construct($fieldValues['name'] . 'Master');
             });
 
         $ss = $this->factory->get('SpaceShip', array('name' => 'Xoo'));

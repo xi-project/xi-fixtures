@@ -1,4 +1,5 @@
 <?php
+
 namespace Xi\Fixtures\FixtureFactory;
 
 use Xi\Fixtures\FixtureFactory;
@@ -91,7 +92,6 @@ class DSL
     {
         return $this->field($name, FieldDef::sequence($funcOrString, $firstNum));
     }
-
 
     /**
      * Defines a field which is filled by `get()`'ing a named entity from the factory.
