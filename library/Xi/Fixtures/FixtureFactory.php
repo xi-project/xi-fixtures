@@ -119,7 +119,7 @@ class FixtureFactory
         }
 
         if ($this->entityDefs[$name] instanceof DSL) {
-            $this->entityDefs[$name]->finish();
+            $this->entityDefs[$name]->_finish();
         }
         
         $def = $this->entityDefs[$name];

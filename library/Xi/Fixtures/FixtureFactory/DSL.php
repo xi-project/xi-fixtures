@@ -38,9 +38,9 @@ class DSL
     }
 
     /**
-     * There is no need to call this manually.
+     * Internal method. Don't call this manually.
      */
-    public function finish()
+    public function _finish()
     {
         $this->factory->defineEntity($this->name, $this->fields, $this->options);
     }
