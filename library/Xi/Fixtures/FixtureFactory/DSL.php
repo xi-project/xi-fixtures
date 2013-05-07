@@ -12,22 +12,22 @@ class DSL
     /**
      * @var FixtureFactory
      */
-    private $factory;
+    protected $factory;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var array
      */
-    private $fields;
+    protected $fields;
 
     /**
      * @var array
      */
-    private $options;
+    protected $options;
 
     public function __construct(FixtureFactory $factory, $name)
     {

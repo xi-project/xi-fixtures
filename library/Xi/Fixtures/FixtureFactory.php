@@ -240,8 +240,17 @@ class FixtureFactory
             throw new Exception("Entity '$name' already defined in fixture factory");
         }
 
-        $this->entityDefs[$name] = new DSL($this, $name);
+        $this->entityDefs[$name] = $this->createDSL($name);
         return $this->entityDefs[$name];
+    }
+
+    /**
+     * @param string $entityName
+     * @return DSL
+     */
+    protected function createDSL($entityName)
+    {
+        return new DSL($this, $entityName);
     }
 
     /**
