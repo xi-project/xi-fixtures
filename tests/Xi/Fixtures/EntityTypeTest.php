@@ -9,7 +9,7 @@ class EntityTypeTest extends TestCase
     public function entityTypeCanBeOverridden()
     {
         $this->factory->define('Captain')
-            ->fromEntity('Person')
+            ->entityType('Person')
             ->field('name', 'TheCaptain');
 
         $cap = $this->factory->get('Captain');
@@ -24,7 +24,7 @@ class EntityTypeTest extends TestCase
         $this->factory->setEntityNamespace('Xi\Fixtures\AnotherNamespace');
 
         $this->factory->define('Captain')
-            ->fromEntity('\Xi\Fixtures\TestEntity\Person')
+            ->entityType('\Xi\Fixtures\TestEntity\Person')
             ->field('name', 'TheCaptain');
 
         $cap = $this->factory->get('Captain');
@@ -37,11 +37,11 @@ class EntityTypeTest extends TestCase
     public function sameTypeOfEntityCanBeDefinedWithTwoNames()
     {
         $this->factory->define('Captain')
-            ->fromEntity('Person')
+            ->entityType('Person')
             ->field('name', 'TheCaptain');
 
         $this->factory->define('Sailor')
-            ->fromEntity('Person')
+            ->entityType('Person')
             ->sequence('name', 'Sailor #%d');
 
         $s1 = $this->factory->get('Sailor');

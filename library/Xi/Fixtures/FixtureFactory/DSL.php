@@ -51,7 +51,7 @@ class DSL
      * @param string $type
      * @return DSL
      */
-    public function fromEntity($type)
+    public function entityType($type)
     {
         $this->options['entityType'] = $type;
         return $this;
