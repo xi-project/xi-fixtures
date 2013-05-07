@@ -8,9 +8,11 @@ class IncorrectUsageTest extends TestCase
      */
     public function throwsWhenTryingToDefineTheSameEntityTwice()
     {
-        $factory = $this->factory->defineEntity('SpaceShip');
-        $this->assertThrows(function() use ($factory) {
-            $factory->defineEntity('SpaceShip');
+        $this->factory->define('SpaceShip');
+
+        $self = $this;
+        $this->assertThrows(function() use ($self) {
+            $self->factory->define('SpaceShip');
         });
     }
     
@@ -21,7 +23,8 @@ class IncorrectUsageTest extends TestCase
     {
         $self = $this;
         $this->assertThrows(function() use ($self) {
-            $self->factory->defineEntity('NotAClass');
+            $self->factory->define('NotAClass');
+            $self->factory->get('NotAClass');
         });
     }
     
@@ -34,7 +37,8 @@ class IncorrectUsageTest extends TestCase
         
         $self = $this;
         $this->assertThrows(function() use ($self) {
-            $self->factory->defineEntity('NotAnEntity');
+            $self->factory->define('NotAnEntity');
+            $self->factory->get('NotAnEntity');
         });
     }
     
@@ -45,9 +49,10 @@ class IncorrectUsageTest extends TestCase
     {
         $self = $this;
         $this->assertThrows(function() use ($self) {
-            $self->factory->defineEntity('SpaceShip', array(
-                'pieType' => 'blueberry'
-            ));
+            $self->factory->define('SpaceShip')
+                ->field('pieType', 'blueberry');
+
+            $self->factory->get('SpaceShip');
         });
     }
     
@@ -56,8 +61,9 @@ class IncorrectUsageTest extends TestCase
      */
     public function throwsWhenTryingToGiveNonexistentFieldsWhileConstructing()
     {
-        $this->factory->defineEntity('SpaceShip', array('name' => 'Alpha'));
-        
+        $this->factory->define('SpaceShip')
+            ->field('name', 'Alpha');
+
         $self = $this;
         $this->assertThrows(function() use ($self) {
             $self->factory->get('SpaceShip', array(

@@ -1,6 +1,6 @@
 <?php
 
-namespace Xi\Fixtures;
+namespace Xi\Fixtures\FixtureFactory;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;

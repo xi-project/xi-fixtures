@@ -5,6 +5,8 @@ namespace Xi\Fixtures;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Xi\Fixtures\FixtureFactory\DSL;
+use Xi\Fixtures\FixtureFactory\EntityDef;
 use Exception;
 
 /**
@@ -53,12 +55,17 @@ class FixtureFactory
     
     /**
      * Sets the namespace to be prefixed to all entity names passed to this class.
+     *
+     * @param string $namespace
      */
     public function setEntityNamespace($namespace)
     {
         $this->entityNamespace = trim($namespace, '\\');
     }
-    
+
+    /**
+     * @return string
+     */
     public function getEntityNamespace()
     {
         return $this->entityNamespace;
@@ -71,6 +78,10 @@ class FixtureFactory
      * a singleton with the entity name. See `getAsSingleton()`.
      * 
      * If you've called `persistOnGet()` then the entity is also persisted.
+     *
+     * @param  string $name
+     * @param  array  $fieldOverrides
+     * @return object
      */
     public function get($name, array $fieldOverrides = array())
     {
@@ -85,6 +96,10 @@ class FixtureFactory
     
     /**
      * Works like `get()`, but never persists Entity.
+     *
+     * @param  string $name
+     * @param  array  $fieldOverrides
+     * @return object
      */
     public function getUnpersisted($name, array $fieldOverrides = array())
     {
@@ -101,6 +116,10 @@ class FixtureFactory
              throw new Exception(
                  "Fixture '$name' is undefined. Define it before calling get()"
              );
+        }
+
+        if ($this->entityDefs[$name] instanceof DSL) {
+            $this->entityDefs[$name]->_finish();
         }
         
         $def = $this->entityDefs[$name];
@@ -156,6 +175,8 @@ class FixtureFactory
      * Sets whether `get()` should automatically persist the entity it creates.
      * By default it does not. In any case, you still need to call
      * flush() yourself.
+     *
+     * @param boolean $enabled
      */
     public function persistOnGet($enabled = true)
     {
@@ -166,20 +187,28 @@ class FixtureFactory
      * A shorthand combining `get()` and `setSingleton()`.
      * 
      * It's illegal to call this if `$name` already has a singleton.
+     *
+     * @param  string    $name
+     * @param  array     $fieldOverrides
+     * @return object
+     * @throws Exception
      */
     public function getAsSingleton($name, array $fieldOverrides = array())
     {
         if (isset($this->singletons[$name])) {
             throw new Exception("Already a singleton: $name");
         }
-        $this->singletons[$name] = $this->get($name, $fieldOverrides);
-        return $this->singletons[$name];
+
+        return $this->singletons[$name] = $this->get($name, $fieldOverrides);
     }
     
     /**
      * Sets `$entity` to be the singleton for `$name`.
      * 
      * This causes `get($name)` to return `$entity`.
+     *
+     * @param string $name
+     * @param object $entity
      */
     public function setSingleton($name, $entity)
     {
@@ -190,22 +219,56 @@ class FixtureFactory
      * Unsets the singleton for `$name`.
      * 
      * This causes `get($name)` to return new entities again.
+     *
+     * @param string $name
      */
     public function unsetSingleton($name)
     {
         unset($this->singletons[$name]);
     }
-    
+
     /**
-     * Defines how to create a default entity of type `$name`.
-     * 
-     * See the readme for a tutorial.
-     * 
+     * Starts defining how to create an entity.
+     *
+     * @param  string    $name The name by which these entities can be retrieved.
+     * @throws Exception
+     * @return DSL
+     */
+    public function define($name)
+    {
+        if (isset($this->entityDefs[$name])) {
+            throw new Exception("Entity '$name' already defined in fixture factory");
+        }
+
+        $this->entityDefs[$name] = $this->createDSL($name);
+        return $this->entityDefs[$name];
+    }
+
+    /**
+     * @param string $entityName
+     * @return DSL
+     */
+    protected function createDSL($entityName)
+    {
+        return new DSL($this, $entityName);
+    }
+
+    /**
+     * Please use `define()` instead.
+     *
+     * This method is retained for backwards compatibility and internal use.
+     *
+     * @deprecated This will be made private in 2.x.
+     *
+     * @param  string         $name The name of the entity to define.
+     * @param  array          $fieldDefs An array mapping field names to functions or constant values.
+     * @param  array          $config Configuration options.
+     * @throws Exception
      * @return FixtureFactory
      */
     public function defineEntity($name, array $fieldDefs = array(), array $config = array())
     {
-        if (isset($this->entityDefs[$name])) {
+        if (isset($this->entityDefs[$name]) && !($this->entityDefs[$name] instanceof DSL)) {
             throw new Exception("Entity '$name' already defined in fixture factory");
         }
 
@@ -239,7 +302,7 @@ class FixtureFactory
 
         return $this->entityNamespace . '\\' . $name;
     }
-    
+
     protected function updateCollectionSideOfAssocation($entityBeingCreated, $metadata, $fieldName, $value)
     {
         $assoc = $metadata->getAssociationMapping($fieldName);

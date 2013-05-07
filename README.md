@@ -9,11 +9,11 @@ Xi Fixtures provides convenient and scalable creation of Doctrine entities in te
 Imagine we're setting up a test and need 3 users in the database. With Xi Fixtures we can specify in one place that each user needs a unique username and needs to belong to a group (via a one-to-many relation):
 
 ```php
-$this->factory->defineEntity('User', array(
-    'username' => FieldDef::sequence("user_%d"),
-    'administrator' => false,
-    'group' => FieldDef::reference('Group')
-));
+$this->factory
+    ->define('User')
+    ->sequence('username', 'user_%d')
+    ->field('administrator', false)
+    ->reference('group', 'Group');
 ```
 
 Now in our tests we can simply say:
@@ -63,17 +63,17 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         // Define that users have names like user_1, user_2, etc.,
         // that they are not administrators by default and
         // that they point to a Group entity.
-        $this->factory->defineEntity('User', array(
-            'username' => FieldDef::sequence("user_%d"),
-            'administrator' => false,
-            'group' => FieldDef::reference('Group')
-        ));
+        $this->factory
+            ->define('User')
+            ->sequence('username', 'user_%d')
+            ->field('administrator', false)
+            ->reference('group', 'Group');
         
         // Define a Group to just have a unique name as above.
         // The order of the definitions does not matter.
-        $this->factory->defineEntity('Group', array(
-            'name' => FieldDef::sequence("group_%d")
-        ));
+        $this->factory
+            ->define('Group')
+            ->sequence('name', 'group_%d');
 
         // If you want your created entities to be saved by default
         // then do the following. You can selectively re-enable or disable
@@ -134,36 +134,30 @@ It's highly recommended to create singletons only in the setups of individual te
 
 ### Advanced ###
 
-You can give an 'afterCreate' callback to be called after an entity is created and its fields are set. Here you can, for instance, invoke the entity's constructor. `FixtureFactory` doesn't invoke the constructor by default since Doctrine doesn't either.
+You can give an `afterCreate` callback to be called after an entity is created and its fields are set. Here you can, for instance, invoke the entity's constructor. `FixtureFactory` doesn't invoke the constructor by default since Doctrine doesn't either.
 
 ```php
 <?php
-$factory->defineEntity('User', array(
-    'username' => FieldDef::sequence("user_%d"),
-), array(
-    'afterCreate' => function(User $user, array $fieldValues) {
+$factory->define('User')
+    ->sequence('username', 'user_%d')
+    ->afterCreate(function(User $user, array $fieldValues) {
         $user->__construct($fieldValues['username']);
-    }
-));
+    });
 ```
 
-You can define multiple versions of the same entity under different names by giving the 'entityType' option.
+You can define multiple versions of the same entity under different names with the `entityType` method.
 
 ```php
 <?php
-$factory->defineEntity('NormalUser', array(
-    'username' => FieldDef::sequence("user_%d"),
-    'administrator' => false
-), array(
-    'entityType' => 'User'
-));
+$factory->define('NormalUser')
+    ->entityType('User')
+    ->sequence('username', 'user_%d')
+    ->field('administrator', false);
 
-$factory->defineEntity('Administrator', array(
-    'username' => FieldDef::sequence("admin_%d"),
-    'administrator' => true
-), array(
-    'entityType' => 'User'
-));
+$factory->define('Administrator')
+    ->entityType('User')
+    ->sequence('username', 'user_%d')
+    ->field('administrator', true);
 ```
 
 ### API reference ###
@@ -172,22 +166,21 @@ $factory->defineEntity('Administrator', array(
 <?php
 
 // Defining entities
-$factory->defineEntity('EntityName', array(
-    'simpleField' => 'constantValue',
+$factory->define('EntityName')
+    ->field('simpleField', 'constantValue')
+    ->field('generatedField', function($factory) { return ...; })
     
-    'generatedField' => function($factory) { return ...; },
+    ->sequence('sequenceField1', 'name-%d') // name-1, name-2, ...
+    ->sequence('sequenceField2', 'name-')   // the same
+    ->sequence('sequenceField3', function($n) { return "name-$n"; })
     
-    'sequenceField1' => FieldDef::sequence('name-%d'), // name-1, name-2, ...
-    'sequenceField2' => FieldDef::sequence('name-'),   // the same
-    'sequenceField3' => FieldDef::sequence(function($n) { return "name-$n"; }),
+    ->reference('referenceField', 'OtherEntity')
     
-    'referenceField' => FieldDef::reference('OtherEntity')
-), array(
-    'afterCreate' => function($entity, $fieldValues) {
+    ->afterCreate(function($entity, $fieldValues) {
         // ...
-    },
-    'entityType' => 'Type' // or '\Namespaced\Type'. Defaults to the 1st parameter.
-));
+    })
+    
+    ->entityType('Type') // or '\Namespaced\Type'
 
 // Getting an entity (new or singleton)
 $factory->get('EntityName', array('field' => 'value'));
@@ -208,10 +201,16 @@ $this->factory->persistOnGet(false);
 
 ### Miscellaneous ###
 
-- `FixtureFactory` and `FieldDef` are designed to be subclassable.
+- `FixtureFactory` and `DSL` are designed to be subclassable.
 - With bidirectional one-to-many associations, the collection on the 'one'
   side will get updated as long as you've remembered to specify the
   `inversedBy` attribute in your mapping.
 
+### Change log ###
 
+* 1.1
+  - Deprecated legacy API, implemented DSL.
+
+* 1.0
+  - Initial release with legacy API.
 
