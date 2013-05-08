@@ -8,7 +8,7 @@ class SingletonTest extends TestCase
      */
     public function afterGettingAnEntityAsASingletonGettingTheEntityAgainReturnsTheSameObject()
     {
-        $this->factory->defineEntity('SpaceShip');
+        $this->factory->define('SpaceShip');
         
         $ss = $this->factory->getAsSingleton('SpaceShip');
         
@@ -21,7 +21,7 @@ class SingletonTest extends TestCase
      */
     public function getAsSingletonMethodAcceptsFieldOverridesLikeGet()
     {
-        $this->factory->defineEntity('SpaceShip');
+        $this->factory->define('SpaceShip');
         
         $ss = $this->factory->getAsSingleton('SpaceShip', array('name' => 'Beta'));
         $this->assertSame('Beta', $ss->getName());
@@ -33,7 +33,7 @@ class SingletonTest extends TestCase
      */
     public function throwsAnErrorWhenCallingGetSingletonTwiceOnTheSameEntity()
     {
-        $this->factory->defineEntity('SpaceShip', array('name' => 'Alpha'));
+        $this->factory->define('SpaceShip', array('name' => 'Alpha'));
         $this->factory->getAsSingleton('SpaceShip');
         
         $self = $this;
@@ -42,14 +42,14 @@ class SingletonTest extends TestCase
         });
     }
     
-    //TODO: should it be an error to get() a singleton with overrides?
+    // TODO: should it be an error to get() a singleton with overrides?
     
     /**
      * @test
      */
     public function allowsSettingSingletons()
     {
-        $this->factory->defineEntity('SpaceShip');
+        $this->factory->define('SpaceShip');
         $ss = new TestEntity\SpaceShip("The mothership");
         
         $this->factory->setSingleton('SpaceShip', $ss);
@@ -62,7 +62,7 @@ class SingletonTest extends TestCase
      */
     public function allowsUnsettingSingletons()
     {
-        $this->factory->defineEntity('SpaceShip');
+        $this->factory->define('SpaceShip');
         $ss = new TestEntity\SpaceShip("The mothership");
         
         $this->factory->setSingleton('SpaceShip', $ss);
@@ -76,7 +76,7 @@ class SingletonTest extends TestCase
      */
     public function allowsOverwritingExistingSingletons()
     {
-        $this->factory->defineEntity('SpaceShip');
+        $this->factory->define('SpaceShip');
         $ss1 = new TestEntity\SpaceShip("The mothership");
         $ss2 = new TestEntity\SpaceShip("The battlecruiser");
         
