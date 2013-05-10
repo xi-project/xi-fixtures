@@ -142,7 +142,11 @@ The following example creates a User that belongs to three Groups. Both sides of
 <?php
 $factory
     ->define('User')
-    ->referenceMany('Group', 'users', 3);
+    ->referenceMany('group', 'Group', 'users', 3);
+    // 'group' is the field in User
+    // 'Group' is the target entity
+    // 'users' is the inverse field in 'Group'
+    // 3 is the default number of 'Group' entities to generate.
 
 $user = $factory->get('User');
 ```
