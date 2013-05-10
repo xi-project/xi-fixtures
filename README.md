@@ -193,7 +193,7 @@ $factory->define('EntityName')
     ->sequence('sequenceField3', function($n) { return "name-$n"; })
     
     ->reference('referenceField', 'OtherEntity')
-    ->referenceMany('referenceField', 'OtherEntity', 'otherField', $count)
+    ->referenceMany('referenceField', 'OtherEntity', 'inverseField', $count)
     
     ->afterCreate(function($entity, $fieldValues) {
         // ...
