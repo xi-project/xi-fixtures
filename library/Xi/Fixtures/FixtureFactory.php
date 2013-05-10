@@ -5,6 +5,7 @@ namespace Xi\Fixtures;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Xi\Fixtures\FixtureFactory\DSL;
 use Xi\Fixtures\FixtureFactory\EntityDef;
 use Exception;
@@ -156,17 +157,27 @@ class FixtureFactory
         }
     }
     
-    protected function setField($ent, EntityDef $def, $fieldName, $fieldValue)
+    protected function setField($ent, EntityDef $def, $fieldName, $newValue)
     {
         $metadata = $def->getEntityMetadata();
-        
-        if ($metadata->isCollectionValuedAssociation($fieldName)) {
-            $metadata->setFieldValue($ent, $fieldName, new ArrayCollection());
-        } else {
-            $metadata->setFieldValue($ent, $fieldName, $fieldValue);
 
-            if (is_object($fieldValue) && $metadata->isSingleValuedAssociation($fieldName)) {
-                $this->updateCollectionSideOfAssocation($ent, $metadata, $fieldName, $fieldValue);
+        if ($metadata->isCollectionValuedAssociation($fieldName)) {
+            $value = $metadata->getFieldValue($ent, $fieldName);
+            if ($value === null) {
+                $value = new ArrayCollection();
+                if (is_array($newValue) || $newValue instanceof \IteratorAggregate) {
+                    foreach ($newValue as $v) {
+                        $value[] = $v;
+                        $this->updateOtherSideOfAssociation($ent, $metadata, $fieldName, $v);
+                    }
+                }
+                $metadata->setFieldValue($ent, $fieldName, $value);
+            }
+        } else {
+            $metadata->setFieldValue($ent, $fieldName, $newValue);
+
+            if (is_object($newValue) && $metadata->isSingleValuedAssociation($fieldName)) {
+                $this->updateOtherSideOfAssociation($ent, $metadata, $fieldName, $newValue);
             }
         }
     }
@@ -303,16 +314,38 @@ class FixtureFactory
         return $this->entityNamespace . '\\' . $name;
     }
 
-    protected function updateCollectionSideOfAssocation($entityBeingCreated, $metadata, $fieldName, $value)
+    protected function updateOtherSideOfAssociation($entityBeingCreated, ClassMetadata $metadata, $fieldName, $otherEntity)
+    {
+        $inverseField = $this->getInverseField($metadata, $fieldName);
+
+        if ($inverseField) {
+            $otherClass = get_class($otherEntity);
+            $otherMetadata = $this->em->getClassMetadata($otherClass);
+            $existingValue = $otherMetadata->getFieldValue($otherEntity, $inverseField);
+
+            if ($otherMetadata->isCollectionValuedAssociation($inverseField)) {
+                if ($existingValue === null) {
+                    $otherMetadata->setFieldValue($otherEntity, $inverseField, new ArrayCollection($entityBeingCreated));
+                } else if (is_array($existingValue) || $existingValue instanceof \ArrayAccess) {
+                    $existingValue[] = $entityBeingCreated;
+                } else {
+                    // Ignore. Maybe the user is doing something strange.
+                }
+            } else {
+                $otherMetadata->setFieldValue($otherEntity, $inverseField, $entityBeingCreated);
+            }
+        }
+    }
+
+    protected function getInverseField(ClassMetadata $metadata, $fieldName)
     {
         $assoc = $metadata->getAssociationMapping($fieldName);
-        $inverse = $assoc['inversedBy'];
-        if ($inverse) {
-            $valueMetadata = $this->em->getClassMetadata(get_class($value));
-            $collection = $valueMetadata->getFieldValue($value, $inverse);
-            if ($collection instanceof Collection) {
-                $collection->add($entityBeingCreated);
-            }
+        if (isset($assoc['inversedBy'])) {
+            return $assoc['inversedBy'];
+        } else if (isset($assoc['mappedBy'])) {
+            return $assoc['mappedBy'];
+        } else {
+            return null;
         }
     }
 }

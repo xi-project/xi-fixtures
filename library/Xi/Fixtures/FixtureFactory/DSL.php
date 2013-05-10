@@ -110,6 +110,26 @@ class DSL
     }
 
     /**
+     * Defines a field which is filled by `get()`ing multiple named entities from the factory.
+     *
+     * This field type does not work well with singletons, as `get()` will return
+     * a singleton object multiple times.
+     *
+     * FixtureFactory takes care of updating the other side of a
+     * ManyToMany association.
+     *
+     * @param  string   $name The name of the entity to get.
+     * @param  string   $otherField The name of the inverse property.
+     * @param  string   $otherName The name of another entity in the factory.
+     * @param  int      $amount The number of entities to get.
+     * @return DSL
+     */
+    public function referenceMany($name, $otherName, $otherField, $amount)
+    {
+        return $this->field($name, FieldDef::referenceMany($otherName, $otherField, $amount));
+    }
+
+    /**
      * Sets a callback that is invoked after the entity is created.
      *
      * The callback may take two parameters: the entity that was just created

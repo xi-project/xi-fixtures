@@ -22,6 +22,13 @@ class SpaceShip
      * @OneToMany(targetEntity="Person", mappedBy="spaceShip")
      */
     protected $crew;
+
+    /**
+     * @var Person[]
+     * @ManyToMany(targetEntity="Person", inversedBy="shipsVisited")
+     * @JoinTable(name="space_ship_visitors")
+     */
+    protected $pastVisitors;
     
     /**
      * @var boolean
@@ -33,6 +40,7 @@ class SpaceShip
     {
         $this->name = $name;
         $this->crew = new ArrayCollection();
+        $this->pastVisitors = new ArrayCollection();
         $this->constructorWasCalled = true;
     }
     
@@ -54,6 +62,11 @@ class SpaceShip
     public function getCrew()
     {
         return $this->crew;
+    }
+
+    public function getPastVisitors()
+    {
+        return $this->pastVisitors;
     }
     
     public function constructorWasCalled()

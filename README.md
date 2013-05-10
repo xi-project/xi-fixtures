@@ -132,6 +132,24 @@ class SomeTest extends TestCase
 
 It's highly recommended to create singletons only in the setups of individual test classes and *NOT* in the base class of your tests.
 
+### Many-to-many ###
+
+FixtureFactory helps you get started in constructing many-to-many associations.
+
+The following example creates a User that belongs to three Groups. Both sides of the association are updated.
+
+```php
+<?php
+$factory
+    ->define('User')
+    ->referenceMany('Group', 'users', 3);
+
+$user = $factory->get('User');
+```
+
+The above code also works if the association is one to many. This is an alternative to using `->reference()` from the 'many' side.
+
+
 ### Advanced ###
 
 You can give an `afterCreate` callback to be called after an entity is created and its fields are set. Here you can, for instance, invoke the entity's constructor. `FixtureFactory` doesn't invoke the constructor by default since Doctrine doesn't either.
@@ -175,6 +193,7 @@ $factory->define('EntityName')
     ->sequence('sequenceField3', function($n) { return "name-$n"; })
     
     ->reference('referenceField', 'OtherEntity')
+    ->referenceMany('referenceField', 'OtherEntity', 'otherField', $count)
     
     ->afterCreate(function($entity, $fieldValues) {
         // ...

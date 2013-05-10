@@ -21,12 +21,19 @@ class Person
      * @JoinColumn(name="spaceShip_id", referencedColumnName="id", nullable=true)
      */
     protected $spaceShip;
+
+    /**
+     * @var SpaceShip[]
+     * @ManyToMany(targetEntity="SpaceShip", mappedBy="pastVisitors")
+     */
+    protected $shipsVisited;
     
     
     public function __construct($name, SpaceShip $spaceShip = null)
     {
         $this->name = $name;
         $this->spaceShip = $spaceShip;
+        $this->shipsVisited = new ArrayCollection();
     }
     
     public function getId()
@@ -42,5 +49,10 @@ class Person
     public function getSpaceShip()
     {
         return $this->spaceShip;
+    }
+
+    public function getShipsVisited()
+    {
+        return $this->shipsVisited;
     }
 }
