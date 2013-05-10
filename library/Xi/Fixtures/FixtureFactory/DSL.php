@@ -119,14 +119,14 @@ class DSL
      * ManyToMany association.
      *
      * @param  string   $name The name of the entity to get.
-     * @param  string   $otherField The name of the inverse property.
+     * @param  string   $inverseField The name of the inverse property.
      * @param  string   $otherName The name of another entity in the factory.
      * @param  int      $amount The number of entities to get.
      * @return DSL
      */
-    public function referenceMany($name, $otherName, $otherField, $amount)
+    public function referenceMany($name, $otherName, $inverseField, $amount)
     {
-        return $this->field($name, FieldDef::referenceMany($otherName, $otherField, $amount));
+        return $this->field($name, FieldDef::referenceMany($otherName, $inverseField, $amount));
     }
 
     /**

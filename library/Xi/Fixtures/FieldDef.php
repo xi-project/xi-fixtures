@@ -81,16 +81,16 @@ class FieldDef
      * ManyToMany association.
      *
      * @param  string   $name The name of the entity to get.
-     * @param  string   $inversedBy The name of the inverse property.
+     * @param  string   $inverseField The name of the inverse property.
      * @param  int      $amount The number of entities to get.
      * @return callable
      */
-    public static function referenceMany($name, $inversedBy, $amount)
+    public static function referenceMany($name, $inverseField, $amount)
     {
-        return function (FixtureFactory $factory) use ($name, $inversedBy, $amount) {
+        return function (FixtureFactory $factory) use ($name, $inverseField, $amount) {
             $entities = new ArrayCollection();
             for ($i = 0; $i < $amount; $i++) {
-                $entities->add($factory->get($name, array($inversedBy => array())));
+                $entities->add($factory->get($name, array($inverseField => array())));
             }
             return $entities;
         };

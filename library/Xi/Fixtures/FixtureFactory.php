@@ -3,7 +3,6 @@
 namespace Xi\Fixtures;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Xi\Fixtures\FixtureFactory\DSL;
@@ -326,7 +325,7 @@ class FixtureFactory
             if ($otherMetadata->isCollectionValuedAssociation($inverseField)) {
                 if ($existingValue === null) {
                     $otherMetadata->setFieldValue($otherEntity, $inverseField, new ArrayCollection($entityBeingCreated));
-                } else if (is_array($existingValue) || $existingValue instanceof \ArrayAccess) {
+                } elseif (is_array($existingValue) || $existingValue instanceof \ArrayAccess) {
                     $existingValue[] = $entityBeingCreated;
                 } else {
                     // Ignore. Maybe the user is doing something strange.
@@ -340,12 +339,15 @@ class FixtureFactory
     protected function getInverseField(ClassMetadata $metadata, $fieldName)
     {
         $assoc = $metadata->getAssociationMapping($fieldName);
+
         if (isset($assoc['inversedBy'])) {
             return $assoc['inversedBy'];
-        } else if (isset($assoc['mappedBy'])) {
-            return $assoc['mappedBy'];
-        } else {
-            return null;
         }
+
+        if (isset($assoc['mappedBy'])) {
+            return $assoc['mappedBy'];
+        }
+
+        return null;
     }
 }
