@@ -68,6 +68,11 @@ class SpaceShip
     {
         return $this->pastVisitors;
     }
+
+    public function setPastVisitors($collection)
+    {
+        $this->pastVisitors = $collection;
+    }
     
     public function constructorWasCalled()
     {

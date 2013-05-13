@@ -121,4 +121,21 @@ class BidirectionalManyToManyTest extends TestCase
         $this->assertContains($ship2, $person2->getShipsVisited());
         $this->assertContains($ship3, $person2->getShipsVisited());
     }
+
+    /**
+     * @test
+     * @dataProvider persistAndDontPersist
+     * @expectedException \Exception
+     * @expectedExceptionMessage Field pastVisitors of SpaceShip is defined to be a collection-valued association but its value is neither an array nor an instance of ArrayAccess.
+     */
+    public function settingTheInverseCollectionToSomethingWeirdShouldCauseAnException($persistOnGet)
+    {
+        $this->factory->persistOnGet($persistOnGet);
+
+        $ship = $this->factory->get('SpaceShip');
+        $ship->setPastVisitors('oops');
+        $this->factory->get('Person', array(
+            'shipsVisited' => array($ship)
+        ));
+    }
 }

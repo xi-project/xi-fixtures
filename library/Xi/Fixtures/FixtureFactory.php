@@ -317,7 +317,7 @@ class FixtureFactory
     {
         $inverseField = $this->getInverseField($metadata, $fieldName);
 
-        if ($inverseField) {
+        if ($inverseField) { // Otherwise we're dealing with an unidirectional association
             $otherClass = get_class($otherEntity);
             $otherMetadata = $this->em->getClassMetadata($otherClass);
             $existingValue = $otherMetadata->getFieldValue($otherEntity, $inverseField);
@@ -328,12 +328,22 @@ class FixtureFactory
                 } elseif (is_array($existingValue) || $existingValue instanceof \ArrayAccess) {
                     $existingValue[] = $entityBeingCreated;
                 } else {
-                    // Ignore. Maybe the user is doing something strange.
+                    $this->throwOnInvalidInverseCollectionValue($otherMetadata, $inverseField, $otherEntity);
                 }
             } else {
                 $otherMetadata->setFieldValue($otherEntity, $inverseField, $entityBeingCreated);
             }
         }
+    }
+
+    protected function throwOnInvalidInverseCollectionValue(ClassMetadata $metadata, $fieldName, $entity)
+    {
+        // This is an overridable method just in case there are some kinds of
+        // valid collection values that we don't understand.
+        $msg = 'Field ' . $fieldName . ' of ' . $metadata->getReflectionClass()->getShortName() .
+            ' is defined to be a collection-valued association but its value is' .
+            ' neither an array nor an instance of ArrayAccess.';
+        throw new Exception($msg);
     }
 
     protected function getInverseField(ClassMetadata $metadata, $fieldName)
