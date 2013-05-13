@@ -231,6 +231,9 @@ $this->factory->persistOnGet(false);
 
 ### Change log ###
 
+* 1.1.1
+  - Added `referenceMany` and made one-to-many references specifiable on the many-side.
+
 * 1.1
   - Deprecated legacy API, implemented DSL.
 
