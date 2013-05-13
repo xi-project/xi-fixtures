@@ -119,8 +119,8 @@ class DSL
      * ManyToMany association.
      *
      * @param  string   $name The name of the entity to get.
-     * @param  string   $inverseField The name of the inverse property.
      * @param  string   $otherName The name of another entity in the factory.
+     * @param  string   $inverseField The name of the inverse property.
      * @param  int      $amount The number of entities to get.
      * @return DSL
      */

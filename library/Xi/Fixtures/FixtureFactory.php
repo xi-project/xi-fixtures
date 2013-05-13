@@ -340,10 +340,11 @@ class FixtureFactory
     {
         // This is an overridable method just in case there are some kinds of
         // valid collection values that we don't understand.
-        $msg = 'Field ' . $fieldName . ' of ' . $metadata->getReflectionClass()->getShortName() .
+        throw new Exception(
+            'Field ' . $fieldName . ' of ' . $metadata->getReflectionClass()->getShortName() .
             ' is defined to be a collection-valued association but its value is' .
-            ' neither an array nor an instance of ArrayAccess.';
-        throw new Exception($msg);
+            ' neither an array nor an instance of ArrayAccess.'
+        );
     }
 
     protected function getInverseField(ClassMetadata $metadata, $fieldName)
