@@ -27,7 +27,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
      */
     public $factory;
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 
@@ -64,5 +64,13 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
             $this->fail("Excpected $exceptionType but " . get_class($e) . " was thrown");
         }
         return $e;
+    }
+
+    /**
+     * A data provider providing a single parameter as both true and false.
+     */
+    public function persistAndDontPersist()
+    {
+        return array(array(true), array(false));
     }
 }

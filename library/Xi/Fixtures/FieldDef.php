@@ -2,6 +2,8 @@
 
 namespace Xi\Fixtures;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Contains static methods to define fields as sequences, references etc.
  *
@@ -62,6 +64,35 @@ class FieldDef
     {
         return function (FixtureFactory $factory) use ($name) {
             return $factory->get($name);
+        };
+    }
+
+    /**
+     * Defines a field to `get()` multiple named entities from the factory.
+     *
+     * The normal semantics of `get()` apply.
+     * Normally this means that the field gets fresh instances of the named
+     * entity.
+     *
+     * This field type does not work well with singletons, as `get()` will return
+     * a singleton object multiple times.
+     *
+     * FixtureFactory takes care of updating the other side of a
+     * ManyToMany association.
+     *
+     * @param  string   $name The name of the entity to get.
+     * @param  string   $inverseField The name of the inverse property.
+     * @param  int      $amount The number of entities to get.
+     * @return callable
+     */
+    public static function referenceMany($name, $inverseField, $amount)
+    {
+        return function (FixtureFactory $factory) use ($name, $inverseField, $amount) {
+            $entities = new ArrayCollection();
+            for ($i = 0; $i < $amount; $i++) {
+                $entities->add($factory->get($name, array($inverseField => array())));
+            }
+            return $entities;
         };
     }
 }
