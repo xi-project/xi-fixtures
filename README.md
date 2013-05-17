@@ -228,6 +228,8 @@ $this->factory->persistOnGet(false);
 - With bidirectional one-to-many associations, the collection on the 'one'
   side will get updated as long as you've remembered to specify the
   `inversedBy` attribute in your mapping.
+- If you share your Doctrine entity manager between tests then
+  remember to clear its internal state between tests with `$em->clear()`.
 
 ### Change log ###
 
